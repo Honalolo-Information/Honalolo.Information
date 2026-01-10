@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Information.Domain", "Honalolo.Information.Domain\Honalolo.Information.Domain.csproj", "{58E5ED91-27E3-492C-92C3-5EA49BFF1D8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Information.Infrastructure", "Honalolo.Information.Infrastructure\Honalolo.Information.Infrastructure.csproj", "{445B696C-9112-48E6-BE45-9EBCE23140FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{58E5ED91-27E3-492C-92C3-5EA49BFF1D8C}.Release|x64.Build.0 = Release|Any CPU
 		{58E5ED91-27E3-492C-92C3-5EA49BFF1D8C}.Release|x86.ActiveCfg = Release|Any CPU
 		{58E5ED91-27E3-492C-92C3-5EA49BFF1D8C}.Release|x86.Build.0 = Release|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x64.Build.0 = Release|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
