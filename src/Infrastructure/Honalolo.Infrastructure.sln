@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Inforamtion.Domain", "Honalolo.Inforamtion.Domain\Honalolo.Inforamtion.Domain.csproj", "{58E5ED91-27E3-492C-92C3-5EA49BFF1D8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Information.Domain", "Honalolo.Information.Domain\Honalolo.Information.Domain.csproj", "{58E5ED91-27E3-492C-92C3-5EA49BFF1D8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
