@@ -1,6 +1,6 @@
-﻿using Honalolo.Inforamtion.Domain.Common;
+﻿using Honalolo.Information.Domain.Common;
 
-namespace Honalolo.Inforamtion.Domain.Entities.Attractions
+namespace Honalolo.Information.Domain.Entities.Attractions
 {
     public class OpeningHour : BaseEntity
     {

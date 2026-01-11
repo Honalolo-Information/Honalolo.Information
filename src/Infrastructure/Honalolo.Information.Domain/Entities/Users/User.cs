@@ -1,6 +1,6 @@
-﻿using Honalolo.Inforamtion.Domain.Common;
-using Honalolo.Inforamtion.Domain.Entities.Attractions;
-using Honalolo.Inforamtion.Domain.Enums;
+﻿using Honalolo.Information.Domain.Common;
+using Honalolo.Information.Domain.Enums;
+using Honalolo.Information.Domain.Entities.Attractions;
 
 public class User : BaseEntity
 {

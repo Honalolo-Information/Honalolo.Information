@@ -1,4 +1,4 @@
-﻿namespace Honalolo.Inforamtion.Domain.Common
+﻿namespace Honalolo.Information.Domain.Common
 {
     public abstract class BaseEntity
     {

@@ -1,4 +1,4 @@
-﻿using Honalolo.Inforamtion.Domain.Entities.Attractions;
+﻿using Honalolo.Information.Domain.Entities.Attractions;
 using Honalolo.Information.Domain.Entities.Interfaces;
 using Honalolo.Information.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;

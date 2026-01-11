@@ -1,7 +1,7 @@
-﻿using Honalolo.Inforamtion.Domain.Common;
-using Honalolo.Inforamtion.Domain.Entities.Attractions;
+﻿using Honalolo.Information.Domain.Common;
+using Honalolo.Information.Domain.Entities.Attractions;
 
-namespace Honalolo.Inforamtion.Domain.Entities.Locations
+namespace Honalolo.Information.Domain.Entities.Locations
 {
     public class City : BaseEntity
     {

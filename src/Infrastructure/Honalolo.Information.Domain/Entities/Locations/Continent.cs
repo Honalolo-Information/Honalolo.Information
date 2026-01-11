@@ -1,6 +1,6 @@
-﻿using Honalolo.Inforamtion.Domain.Common;
+﻿using Honalolo.Information.Domain.Common;
 
-namespace Honalolo.Inforamtion.Domain.Entities.Locations
+namespace Honalolo.Information.Domain.Entities.Locations
 {
     public class Continent : BaseEntity
     {

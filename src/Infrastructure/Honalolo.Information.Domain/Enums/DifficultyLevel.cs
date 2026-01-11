@@ -1,4 +1,4 @@
-﻿namespace Honalolo.Inforamtion.Domain.Enums
+﻿namespace Honalolo.Information.Domain.Enums
 {
     public enum DifficultyLevel
     {

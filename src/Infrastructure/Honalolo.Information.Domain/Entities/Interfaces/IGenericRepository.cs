@@ -1,4 +1,4 @@
-﻿using Honalolo.Inforamtion.Domain.Common;
+﻿using Honalolo.Information.Domain.Common;
 
 namespace Honalolo.Information.Domain.Entities.Interfaces
 {

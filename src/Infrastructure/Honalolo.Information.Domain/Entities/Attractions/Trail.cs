@@ -1,7 +1,7 @@
-﻿using Honalolo.Inforamtion.Domain.Common;
-using Honalolo.Inforamtion.Domain.Enums;
+﻿using Honalolo.Information.Domain.Common;
+using Honalolo.Information.Domain.Enums;
 
-namespace Honalolo.Inforamtion.Domain.Entities.Attractions
+namespace Honalolo.Information.Domain.Entities.Attractions
 {
     public class Trail : BaseEntity
     {

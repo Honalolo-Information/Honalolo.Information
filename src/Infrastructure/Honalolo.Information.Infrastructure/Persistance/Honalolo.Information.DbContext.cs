@@ -1,5 +1,5 @@
-﻿using Honalolo.Inforamtion.Domain.Entities.Attractions;
-using Honalolo.Inforamtion.Domain.Entities.Locations;
+﻿using Honalolo.Information.Domain.Entities.Attractions;
+using Honalolo.Information.Domain.Entities.Locations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Honalolo.Information.Infrastructure.Persistance
@@ -34,7 +34,7 @@ namespace Honalolo.Information.Infrastructure.Persistance
             {
                 entity.ToTable("Users"); // Table name in DB
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).HasColumnName("user_id") // [cite: 1]
+                entity.Property(e => e.Id).HasColumnName("user_id");
                 entity.Property(e => e.Role).HasColumnName("user_type").HasConversion<int>();
                 entity.Property(e => e.UserName).HasColumnName("user_name").HasMaxLength(255);
                 entity.Property(e => e.Email).HasColumnName("email").HasMaxLength(255);
@@ -119,6 +119,57 @@ namespace Honalolo.Information.Infrastructure.Persistance
                 entity.Property(e => e.Id).HasColumnName("continent_id");
                 entity.Property(e => e.Name).HasColumnName("continent_name");
             });
+
+            // === EXTENSION TABLES MAPPING ===
+            // 1. Events
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.ToTable("Events");
+                entity.Property(e => e.AttractionId).HasColumnName("attraction_id");
+                entity.Property(e => e.EventType).HasColumnName("event_type");
+                entity.Property(e => e.StartDate).HasColumnName("start_date");
+                entity.Property(e => e.EndDate).HasColumnName("end_date");
+            });
+
+            // 2. Food
+            modelBuilder.Entity<Food>(entity =>
+            {
+                entity.ToTable("Food"); // Check if your DB uses singular "Food" or plural "Foods"
+                entity.Property(e => e.Id).HasColumnName("attraction_id");
+                // CRITICAL: Map C# 'CuisineType' to DB 'food_type'
+                entity.Property(e => e.CuisineType).HasColumnName("food_type");
+            });
+
+            // 3. Hotels
+            modelBuilder.Entity<Hotel>(entity =>
+            {
+                entity.ToTable("Hotels");
+                entity.Property(e => e.Id).HasColumnName("attraction_id");
+                // CRITICAL: Map C# 'AmenitiesJson' to DB 'amenities'
+                entity.Property(e => e.AmenitiesJson).HasColumnName("amenities");
+            });
+
+            // 4. Trails
+            modelBuilder.Entity<Trail>(entity =>
+            {
+                entity.ToTable("Trails");
+                entity.Property(e => e.AttractionId).HasColumnName("attraction_id");
+                entity.Property(e => e.DistanceMeters).HasColumnName("distance_meters");
+                entity.Property(e => e.AltitudeMeters).HasColumnName("attlitude_meters"); // Note: Schema diagram had a typo "attlitude". Check your DB!
+                entity.Property(e => e.StartingPoint).HasColumnName("starting_point");
+                entity.Property(e => e.EndpointPoint).HasColumnName("endpoint_point");
+                // Map the Enum FK
+                entity.Property(e => e.DifficultyLevelId).HasColumnName("attraction_diffculty_level");
+            });
+
+            // 5. Attraction Types
+            modelBuilder.Entity<AttractionType>(entity =>
+            {
+                entity.ToTable("Attraction_types"); // Explicit table name
+                entity.Property(e => e.Id).HasColumnName("attraction_type_id");
+                entity.Property(e => e.TypeName).HasColumnName("type_name");
+            });
+
         }
     }
 }
