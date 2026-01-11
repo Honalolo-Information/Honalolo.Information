@@ -14,14 +14,17 @@ namespace Honalolo.Information.Infrastructure.Repositories
             _context = context;
         }
 
-        // Standard CRUD
         public async Task<Attraction?> GetByIdAsync(int id)
         {
             return await _context.Attractions
-                .Include(a => a.OpeningHours) // Load child data eagerly
+                .Include(a => a.OpeningHours)
                 .Include(a => a.Languages)
                 .Include(a => a.Type)
-                .Include(a => a.EventDetails) // Load extension if it exists
+                .Include(a => a.City)
+                .Include(a => a.EventDetails)
+                .Include(a => a.TrailDetails) 
+                .Include(a => a.HotelDetails) 
+                .Include(a => a.FoodDetails)  
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 

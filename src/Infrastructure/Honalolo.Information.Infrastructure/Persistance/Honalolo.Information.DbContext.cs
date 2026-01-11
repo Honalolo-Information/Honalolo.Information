@@ -134,9 +134,10 @@ namespace Honalolo.Information.Infrastructure.Persistance
             // 2. Food
             modelBuilder.Entity<Food>(entity =>
             {
-                entity.ToTable("Food"); // Check if your DB uses singular "Food" or plural "Foods"
-                entity.Property(e => e.Id).HasColumnName("attraction_id");
-                // CRITICAL: Map C# 'CuisineType' to DB 'food_type'
+                entity.ToTable("Food");
+                entity.HasKey(e => e.Id); // Uses standard PK
+                entity.Property(e => e.Id).HasColumnName("food_id"); // Give it its own PK column
+                entity.Property(e => e.AttractionId).HasColumnName("attraction_id"); // Map the FK
                 entity.Property(e => e.CuisineType).HasColumnName("food_type");
             });
 
@@ -144,8 +145,9 @@ namespace Honalolo.Information.Infrastructure.Persistance
             modelBuilder.Entity<Hotel>(entity =>
             {
                 entity.ToTable("Hotels");
-                entity.Property(e => e.Id).HasColumnName("attraction_id");
-                // CRITICAL: Map C# 'AmenitiesJson' to DB 'amenities'
+                entity.HasKey(e => e.Id); // Uses standard PK
+                entity.Property(e => e.Id).HasColumnName("hotel_id"); // Give it its own PK column
+                entity.Property(e => e.AttractionId).HasColumnName("attraction_id");
                 entity.Property(e => e.AmenitiesJson).HasColumnName("amenities");
             });
 
