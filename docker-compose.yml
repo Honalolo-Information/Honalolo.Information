@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: honalolo_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123  # You will use this in your connection string
+      MYSQL_DATABASE: tourist_info_db       # This creates the empty DB for you
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: userpassword123
+    ports:
+      - "3306:3306"                         # Maps localhost:3306 to the container
+    volumes:
+      - mariadb_data:/var/lib/mysql         # Keeps data even if you restart container
+
+volumes:
+  mariadb_data:
