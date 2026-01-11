@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using Honalolo.Information.Domain.Entities;
-using Honalolo.Inforamtion.Domain.Entities.Attractions;
+﻿using Honalolo.Inforamtion.Domain.Entities.Attractions;
 using Honalolo.Inforamtion.Domain.Entities.Locations;
+using Microsoft.EntityFrameworkCore;
 
-namespace Honalolo.Information.Infrastructure
+namespace Honalolo.Information.Infrastructure.Persistance
 {
     public class TouristInfoDbContext : DbContext
     {
@@ -13,7 +10,6 @@ namespace Honalolo.Information.Infrastructure
         {
         }
 
-        // 1. Register all your Domain Entities as DbSets
         public DbSet<User> Users { get; set; }
         public DbSet<Attraction> Attractions { get; set; }
         public DbSet<AttractionType> AttractionTypes { get; set; }
@@ -22,7 +18,6 @@ namespace Honalolo.Information.Infrastructure
         public DbSet<Country> Countries { get; set; }
         public DbSet<Continent> Continents { get; set; }
 
-        // Extension tables
         public DbSet<Event> Events { get; set; }
         public DbSet<Trail> Trails { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
@@ -39,7 +34,7 @@ namespace Honalolo.Information.Infrastructure
             {
                 entity.ToTable("Users"); // Table name in DB
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).HasColumnName("user_id"); // [cite: 1]
+                entity.Property(e => e.Id).HasColumnName("user_id") // [cite: 1]
                 entity.Property(e => e.Role).HasColumnName("user_type").HasConversion<int>();
                 entity.Property(e => e.UserName).HasColumnName("user_name").HasMaxLength(255);
                 entity.Property(e => e.Email).HasColumnName("email").HasMaxLength(255);
