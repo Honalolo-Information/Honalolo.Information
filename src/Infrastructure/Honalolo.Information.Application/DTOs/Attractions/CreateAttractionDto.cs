@@ -14,6 +14,9 @@ namespace Honalolo.Information.Application.DTOs.Attractions
         // Specific details (Optional - Frontend sends only what's needed)
         public CreateEventDto? EventDetails { get; set; }
         public CreateTrailDto? TrailDetails { get; set; }
+        public CreateHotelDto? HotelDetails { get; set; }
+        public CreateFoodDto? FoodDetails { get; set; }
+
     }
 
     public class CreateEventDto
@@ -26,5 +29,15 @@ namespace Honalolo.Information.Application.DTOs.Attractions
     {
         public int DistanceMeters { get; set; }
         public int DifficultyLevelId { get; set; }
+    }
+
+    public class CreateHotelDto
+    {
+        public string Amenities { get; set; } = string.Empty;
+    }
+
+    public class CreateFoodDto
+    {
+        public string FoodType { get; set; } = string.Empty;
     }
 }
