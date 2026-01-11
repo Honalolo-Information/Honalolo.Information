@@ -6,7 +6,6 @@ namespace Honalolo.Information.Domain.Entities.Locations
     {
         public string Name { get; set; } = string.Empty;
 
-        // A city has many attractions
         public ICollection<Country> Countries { get; set; } = new List<Country>();
     }
 }
