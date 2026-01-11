@@ -27,4 +27,14 @@
         public int DistanceMeters { get; set; }
         public string Difficulty { get; set; } = string.Empty; // "Hard" instead of "2"
     }
+
+    public class HotelDto
+    {
+        public string Amenities { get; set; } = string.Empty;
+    }
+
+    public class FoodDto
+    {
+        public string FoodType { get; set; } = string.Empty;
+    }
 }
