@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Information.Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Information.Infrastructure", "Honalolo.Information.Infrastructure\Honalolo.Information.Infrastructure.csproj", "{445B696C-9112-48E6-BE45-9EBCE23140FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honalolo.Information.Application", "Honalolo.Information.Application\Honalolo.Information.Application.csproj", "{75FF4368-F036-4E35-A708-579F8682545E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x64.Build.0 = Release|Any CPU
 		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{445B696C-9112-48E6-BE45-9EBCE23140FE}.Release|x86.Build.0 = Release|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Debug|x64.Build.0 = Debug|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Debug|x86.Build.0 = Debug|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Release|x64.ActiveCfg = Release|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Release|x64.Build.0 = Release|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Release|x86.ActiveCfg = Release|Any CPU
+		{75FF4368-F036-4E35-A708-579F8682545E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
