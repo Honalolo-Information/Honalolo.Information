@@ -92,9 +92,12 @@ namespace Honalolo.Information.Infrastructure.Persistance
             modelBuilder.Entity<City>(entity =>
             {
                 entity.ToTable("Cities");
-                entity.Property(e => e.Id).HasColumnName("city_id"); 
+                entity.Property(e => e.Id).HasColumnName("city_id");
                 entity.Property(e => e.Name).HasColumnName("city_name");
-                entity.HasOne(d => d.Region).WithMany().HasForeignKey(d => d.RegionId);
+
+                entity.HasOne(d => d.Region)
+                      .WithMany(p => p.City)
+                      .HasForeignKey(d => d.RegionId);
             });
 
             modelBuilder.Entity<Region>(entity =>
@@ -102,7 +105,10 @@ namespace Honalolo.Information.Infrastructure.Persistance
                 entity.ToTable("Regions");
                 entity.Property(e => e.Id).HasColumnName("region_id");
                 entity.Property(e => e.Name).HasColumnName("region_name");
-                entity.HasOne(d => d.Country).WithMany().HasForeignKey(d => d.CountryId);
+
+                entity.HasOne(d => d.Country)
+                      .WithMany(p => p.Regions)
+                      .HasForeignKey(d => d.CountryId);
             });
 
             modelBuilder.Entity<Country>(entity =>
@@ -110,7 +116,10 @@ namespace Honalolo.Information.Infrastructure.Persistance
                 entity.ToTable("Countries");
                 entity.Property(e => e.Id).HasColumnName("country_id");
                 entity.Property(e => e.Name).HasColumnName("country_name");
-                entity.HasOne(d => d.Continent).WithMany().HasForeignKey(d => d.ContinentId);
+
+                entity.HasOne(d => d.Continent)
+                      .WithMany(p => p.Countries)
+                      .HasForeignKey(d => d.ContinentId);
             });
 
             modelBuilder.Entity<Continent>(entity =>
