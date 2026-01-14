@@ -59,6 +59,7 @@ namespace Honalolo.Information.Infrastructure.Repositories
                 .Where(a => a.EventDetails != null)      // Only return rows that ARE events
                 .ToListAsync();
         }
+
         public async Task<IEnumerable<Attraction>> GetAllAsync(int? typeId, int? regionId, int? cityId)
         {
             var query = _context.Attractions

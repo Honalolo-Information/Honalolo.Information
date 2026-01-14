@@ -4,7 +4,7 @@ namespace Honalolo.Information.Application.Interfaces
 {
     public interface IAttractionService
     {
-        Task<IEnumerable<AttractionDto>> GetAllAsync(int? typeId, int? regionId, int? cityId);
+        Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter);
         Task<AttractionDetailDto?> GetByIdAsync(int id);
         Task<int> CreateAsync(CreateAttractionDto dto, int userId);
     }
