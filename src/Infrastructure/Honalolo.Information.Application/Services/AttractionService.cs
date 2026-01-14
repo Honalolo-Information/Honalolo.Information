@@ -111,7 +111,7 @@ namespace Honalolo.Information.Application.Services
 
         public async Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter)
         {
-            var entities = await _repository.GetAllAsync(filter.TypeId, filter.RegionId, filter.CityId);
+            var entities = await _repository.GetAllAsync(filter.TypeId, filter.RegionId, filter.CityId, filter.CountryId, filter.ContinentId);
 
             // Map to DTO (Reuse your existing mapping logic)
             return entities.Select(e => new AttractionDto

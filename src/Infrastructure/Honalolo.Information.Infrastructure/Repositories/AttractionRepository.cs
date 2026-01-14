@@ -60,11 +60,14 @@ namespace Honalolo.Information.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Attraction>> GetAllAsync(int? typeId, int? regionId, int? cityId)
+        public async Task<IEnumerable<Attraction>> GetAllAsync(int? typeId, int? regionId, int? cityId, int? countryId, int? continentId)
         {
             var query = _context.Attractions
                 .Include(a => a.Type)
                 .Include(a => a.City)
+                .Include(a => a.City.Region)
+                .Include(a => a.City.Region.Country)
+                .Include(a => a.City.Region.Country.Continent)
                 .AsQueryable();
 
             if (typeId.HasValue)
@@ -75,6 +78,9 @@ namespace Honalolo.Information.Infrastructure.Repositories
 
             if (regionId.HasValue && !cityId.HasValue)
                 query = query.Where(a => a.City.RegionId == regionId.Value);
+
+            if (countryId.HasValue && !regionId.HasValue && !cityId.HasValue)
+                query = query.Where(a => a.City.Region.CountryId == countryId.Value);
 
             return await query.ToListAsync();
         }

@@ -23,7 +23,6 @@ namespace Honalolo.Information.Infrastructure.Persistance
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Food> Foods { get; set; }
 
-        // Child tables
         public DbSet<OpeningHour> OpeningHours { get; set; }
         public DbSet<AttractionLanguage> Languages { get; set; }
 
@@ -32,7 +31,7 @@ namespace Honalolo.Information.Infrastructure.Persistance
             // === USERS MAPPING ===
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("Users"); // Table name in DB
+                entity.ToTable("Users");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("user_id");
                 entity.Property(e => e.Role).HasColumnName("user_type").HasConversion<int>();
@@ -57,7 +56,7 @@ namespace Honalolo.Information.Infrastructure.Persistance
                 entity.HasOne(d => d.Author)
                       .WithMany(p => p.AuthoredAttractions)
                       .HasForeignKey(d => d.AuthorId)
-                      .HasConstraintName("FK_Attraction_User"); // Optional: Name the constraint
+                      .HasConstraintName("FK_Attraction_User");
 
                 entity.HasOne(d => d.City)
                       .WithMany(p => p.Attractions)
@@ -144,9 +143,9 @@ namespace Honalolo.Information.Infrastructure.Persistance
             modelBuilder.Entity<Food>(entity =>
             {
                 entity.ToTable("Food");
-                entity.HasKey(e => e.Id); // Uses standard PK
-                entity.Property(e => e.Id).HasColumnName("food_id"); // Give it its own PK column
-                entity.Property(e => e.AttractionId).HasColumnName("attraction_id"); // Map the FK
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("food_id"); 
+                entity.Property(e => e.AttractionId).HasColumnName("attraction_id"); 
                 entity.Property(e => e.CuisineType).HasColumnName("food_type");
             });
 
@@ -154,8 +153,8 @@ namespace Honalolo.Information.Infrastructure.Persistance
             modelBuilder.Entity<Hotel>(entity =>
             {
                 entity.ToTable("Hotels");
-                entity.HasKey(e => e.Id); // Uses standard PK
-                entity.Property(e => e.Id).HasColumnName("hotel_id"); // Give it its own PK column
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("hotel_id");
                 entity.Property(e => e.AttractionId).HasColumnName("attraction_id");
                 entity.Property(e => e.AmenitiesJson).HasColumnName("amenities");
             });
@@ -166,17 +165,16 @@ namespace Honalolo.Information.Infrastructure.Persistance
                 entity.ToTable("Trails");
                 entity.Property(e => e.AttractionId).HasColumnName("attraction_id");
                 entity.Property(e => e.DistanceMeters).HasColumnName("distance_meters");
-                entity.Property(e => e.AltitudeMeters).HasColumnName("attlitude_meters"); // Note: Schema diagram had a typo "attlitude". Check your DB!
+                entity.Property(e => e.AltitudeMeters).HasColumnName("attlitude_meters");
                 entity.Property(e => e.StartingPoint).HasColumnName("starting_point");
                 entity.Property(e => e.EndpointPoint).HasColumnName("endpoint_point");
-                // Map the Enum FK
                 entity.Property(e => e.DifficultyLevelId).HasColumnName("attraction_diffculty_level");
             });
 
             // 5. Attraction Types
             modelBuilder.Entity<AttractionType>(entity =>
             {
-                entity.ToTable("Attraction_types"); // Explicit table name
+                entity.ToTable("Attraction_types");
                 entity.Property(e => e.Id).HasColumnName("attraction_type_id");
                 entity.Property(e => e.TypeName).HasColumnName("type_name");
             });

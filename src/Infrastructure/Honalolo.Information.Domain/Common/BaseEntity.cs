@@ -2,6 +2,6 @@
 {
     public abstract class BaseEntity
     {
-        public int Id { get; set; } // Primary Key for all tables
+        public int Id { get; set; }
     }
 }
