@@ -1,3 +1,4 @@
+using Honalolo.Information.Application;
 using Honalolo.Information.Infrastructure;
 
 namespace Honalolo.Information.WebApi

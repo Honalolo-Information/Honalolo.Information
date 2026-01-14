@@ -59,11 +59,23 @@ namespace Honalolo.Information.Infrastructure.Repositories
                 .Where(a => a.EventDetails != null)      // Only return rows that ARE events
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Attraction>> GetAllAsync()
+        public async Task<IEnumerable<Attraction>> GetAllAsync(int? typeId, int? regionId, int? cityId)
         {
-            return await _context.Attractions
+            var query = _context.Attractions
                 .Include(a => a.Type)
-                .ToListAsync();
+                .Include(a => a.City)
+                .AsQueryable();
+
+            if (typeId.HasValue)
+                query = query.Where(a => a.TypeId == typeId.Value);
+
+            if (cityId.HasValue)
+                query = query.Where(a => a.CityId == cityId.Value);
+
+            if (regionId.HasValue && !cityId.HasValue)
+                query = query.Where(a => a.City.RegionId == regionId.Value);
+
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<Attraction>> GetByTypeAsync(int typeId)

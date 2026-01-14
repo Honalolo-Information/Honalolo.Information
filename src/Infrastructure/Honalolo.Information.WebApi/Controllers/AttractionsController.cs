@@ -17,9 +17,10 @@ namespace Honalolo.Information.WebApi.Controllers
 
         // GET: api/attractions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AttractionDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<AttractionDto>>> GetAll([FromQuery] AttractionFilterDto filter)
         {
-            var result = await _service.GetAllAsync();
+            // If filter is empty, it returns everything. If populated, it filters.
+            var result = await _service.SearchAsync(filter);
             return Ok(result);
         }
 
@@ -42,14 +43,6 @@ namespace Honalolo.Information.WebApi.Controllers
 
             var newId = await _service.CreateAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
-        }
-
-        // GET: api/attractions/events?regionId=1
-        [HttpGet("events")]
-        public async Task<ActionResult<IEnumerable<AttractionDto>>> GetEvents([FromQuery] int regionId)
-        {
-            var result = await _service.GetEventsByRegionAsync(regionId);
-            return Ok(result);
         }
     }
 }

@@ -109,24 +109,11 @@ namespace Honalolo.Information.Application.Services
             return dto;
         }
 
-        public async Task<IEnumerable<AttractionDto>> GetAllAsync()
+        public async Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter)
         {
-            var entities = await _repository.GetAllAsync();
+            var entities = await _repository.GetAllAsync(filter.TypeId, filter.RegionId, filter.CityId);
 
-            return entities.Select(e => new AttractionDto
-            {
-                Id = e.Id,
-                Title = e.Title,
-                CityName = e.City?.Name ?? "",
-                TypeName = e.Type?.TypeName ?? "",
-                Price = e.Price
-            });
-        }
-
-        public async Task<IEnumerable<AttractionDto>> GetEventsByRegionAsync(int regionId)
-        {
-            var entities = await _repository.GetEventsByRegionAsync(regionId);
-            // Reuse the mapping logic
+            // Map to DTO (Reuse your existing mapping logic)
             return entities.Select(e => new AttractionDto
             {
                 Id = e.Id,

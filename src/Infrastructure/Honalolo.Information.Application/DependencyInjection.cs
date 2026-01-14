@@ -2,12 +2,16 @@
 using Honalolo.Information.Application.Interfaces;
 using Honalolo.Information.Application.Services;
 
-public static class ApplicationDependencyInjection
+namespace Honalolo.Information.Application
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static class ApplicationDependencyInjection
     {
-        services.AddScoped<IAttractionService, AttractionService>();
-        // services.AddScoped<IAuthService, AuthService>();
-        return services;
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddScoped<IAttractionService, AttractionService>();
+            services.AddScoped<IDictionaryService, DictionaryService>();
+            // services.AddScoped<IAuthService, AuthService>();
+            return services;
+        }
     }
 }
