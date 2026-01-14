@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Honalolo.Information.Domain\Honalolo.Information.Domain.csproj" />
+    <ProjectReference Include="..\Honalolo.Information.Infrastructure\Honalolo.Information.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
