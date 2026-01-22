@@ -10,7 +10,8 @@ namespace Honalolo.Information.Application
         {
             services.AddScoped<IAttractionService, AttractionService>();
             services.AddScoped<IDictionaryService, DictionaryService>();
-            // services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
+
             return services;
         }
     }
