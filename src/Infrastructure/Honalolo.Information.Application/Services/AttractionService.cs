@@ -16,7 +16,6 @@ namespace Honalolo.Information.Application.Services
 
         public async Task<int> CreateAsync(CreateAttractionDto dto, int userId)
         {
-            // 1. Map Base Entity
             var attraction = new Attraction
             {
                 Title = dto.Title,
@@ -25,12 +24,10 @@ namespace Honalolo.Information.Application.Services
                 TypeId = dto.TypeId,
                 Price = dto.Price,
                 AuthorId = userId,
-                // Initialize lists to avoid null errors
                 OpeningHours = new List<OpeningHour>(),
                 Languages = new List<AttractionLanguage>()
             };
 
-            // 2. Handle Specific Sub-Types Logic
             if (dto.EventDetails != null)
             {
                 attraction.EventDetails = new Event
@@ -84,7 +81,6 @@ namespace Honalolo.Information.Application.Services
                 OpeningHours = entity.OpeningHours.Select(o => o.Content).ToList(),
             };
 
-            // Map sub-objects if they exist
             if (entity.EventDetails != null)
             {
                 dto.EventDetails = new EventDto
@@ -96,7 +92,6 @@ namespace Honalolo.Information.Application.Services
 
             if (entity.TrailDetails != null)
             {
-                // Convert Enum ID to readable string for Frontend
                 var difficultyEnum = (Domain.Enums.DifficultyLevel)entity.TrailDetails.DifficultyLevelId;
 
                 dto.TrailDetails = new TrailDto
@@ -113,7 +108,6 @@ namespace Honalolo.Information.Application.Services
         {
             var entities = await _repository.GetAllAsync(filter.TypeId, filter.RegionId, filter.CityId, filter.CountryId, filter.ContinentId);
 
-            // Map to DTO (Reuse your existing mapping logic)
             return entities.Select(e => new AttractionDto
             {
                 Id = e.Id,
