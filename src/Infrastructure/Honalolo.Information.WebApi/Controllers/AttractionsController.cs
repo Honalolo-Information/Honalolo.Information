@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Honalolo.Information.Application.DTOs.Attractions;
+﻿using Honalolo.Information.Application.DTOs.Attractions;
 using Honalolo.Information.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Honalolo.Information.WebApi.Controllers
 {
@@ -35,11 +37,14 @@ namespace Honalolo.Information.WebApi.Controllers
 
         // POST: api/attractions
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] CreateAttractionDto dto, [FromHeader(Name = "X-User-Id")] int userId)
+        [Authorize(Roles = "Administrator,Moderator,Partner")]
+        public async Task<ActionResult<int>> Create([FromBody] CreateAttractionDto dto)
         {
-            // TEMPORARY: For testing without Auth, we read UserID from a header.
-            // Later, we will get this from the JWT Token (User.Identity).
-            if (userId == 0) userId = 1; // Default to Admin for testing if header missing
+            // Get User ID safely from the Token
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+
+            int userId = int.Parse(userIdString);
 
             var newId = await _service.CreateAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
