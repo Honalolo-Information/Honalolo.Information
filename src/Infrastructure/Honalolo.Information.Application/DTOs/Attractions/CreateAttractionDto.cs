@@ -2,21 +2,33 @@
 
 namespace Honalolo.Information.Application.DTOs.Attractions
 {
-    public class CreateAttractionDto
+    namespace Honalolo.Information.Application.DTOs.Attractions
     {
-        [Required]
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public int CityId { get; set; }
-        public int TypeId { get; set; } // 1=Event, 2=Trail, etc.
-        public decimal Price { get; set; }
+        public class CreateAttractionDto
+        {
+            [Required]
+            public string Title { get; set; } = string.Empty;
+            public string Description { get; set; } = string.Empty;
+            public decimal Price { get; set; }
 
-        // Specific details (Optional - Frontend sends only what's needed)
-        public CreateEventDto? EventDetails { get; set; }
-        public CreateTrailDto? TrailDetails { get; set; }
-        public CreateHotelDto? HotelDetails { get; set; }
-        public CreateFoodDto? FoodDetails { get; set; }
+            [Required]
+            public string TypeName { get; set; } = string.Empty;
 
+            [Required]
+            public string CityName { get; set; } = string.Empty;
+            [Required]
+            public string RegionName { get; set; } = string.Empty;
+            [Required]
+            public string CountryName { get; set; } = string.Empty;
+            [Required]
+            public string ContinentName { get; set; } = string.Empty;
+
+            // Details...
+            public CreateEventDto? EventDetails { get; set; }
+            public CreateTrailDto? TrailDetails { get; set; }
+            public CreateHotelDto? HotelDetails { get; set; }
+            public CreateFoodDto? FoodDetails { get; set; }
+        }
     }
 
     public class CreateEventDto

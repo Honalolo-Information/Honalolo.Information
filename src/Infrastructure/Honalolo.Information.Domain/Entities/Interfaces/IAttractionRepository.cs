@@ -4,6 +4,6 @@ namespace Honalolo.Information.Domain.Entities.Interfaces
 {
     public interface IAttractionRepository : IGenericRepository<Attraction>
     {
-        Task<IEnumerable<Attraction>> GetAllAsync(int? typeId, int? regionId, int? cityId, int? countryId, int? continentId);
+        Task<IEnumerable<Attraction>> SearchAsync(string? searchQuery, string? type, string? city, string? region);
     }
 }

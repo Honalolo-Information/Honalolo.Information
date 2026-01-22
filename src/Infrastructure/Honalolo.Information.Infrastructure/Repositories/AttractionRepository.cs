@@ -2,6 +2,7 @@
 using Honalolo.Information.Domain.Entities.Interfaces;
 using Honalolo.Information.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Honalolo.Information.Infrastructure.Repositories
 {
@@ -50,14 +51,37 @@ namespace Honalolo.Information.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<Attraction>> GetEventsByRegionAsync(int regionId)
+        public async Task<IEnumerable<Attraction>> SearchAsync(string? searchQuery, string? type, string? city, string? region)
         {
-            return await _context.Attractions
-                .Include(a => a.EventDetails) // We only care about Events
+            var query = _context.Attractions
+                .Include(a => a.Type)
                 .Include(a => a.City)
-                .Where(a => a.City.RegionId == regionId) // Filter by Region Hierarchy
-                .Where(a => a.EventDetails != null)      // Only return rows that ARE events
-                .ToListAsync();
+                .ThenInclude(c => c.Region) // Load parents for filtering
+                .AsQueryable();
+
+            // 1. Text Search (Title)
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                query = query.Where(a => a.Title.Contains(searchQuery));
+            }
+
+            // 2. Filter by Names
+            if (!string.IsNullOrWhiteSpace(type))
+            {
+                query = query.Where(a => a.Type.TypeName == type);
+            }
+
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                query = query.Where(a => a.City.Name == city);
+            }
+
+            if (!string.IsNullOrWhiteSpace(region))
+            {
+                query = query.Where(a => a.City.Region.Name == region);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<Attraction>> GetAllAsync(int? typeId, int? regionId, int? cityId, int? countryId, int? continentId)
@@ -91,6 +115,11 @@ namespace Honalolo.Information.Infrastructure.Repositories
                 .Include(a => a.Type)
                 .Where(a => a.TypeId == typeId)
                 .ToListAsync();
+        }
+
+        public async Task<Attraction?> FindAsync(Expression<Func<Attraction, bool>> predicate)
+        {
+            return await _context.Attractions.FirstOrDefaultAsync(predicate);
         }
     }
 }

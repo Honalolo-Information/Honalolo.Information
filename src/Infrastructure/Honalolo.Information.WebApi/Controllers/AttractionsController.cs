@@ -1,5 +1,7 @@
 ﻿using Honalolo.Information.Application.DTOs.Attractions;
+using Honalolo.Information.Application.DTOs.Attractions.Honalolo.Information.Application.DTOs.Attractions;
 using Honalolo.Information.Application.Interfaces;
+using Honalolo.Information.Domain.Entities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,24 +12,26 @@ namespace Honalolo.Information.WebApi.Controllers
     [Route("api/[controller]")]
     public class AttractionsController : ControllerBase
     {
+        private readonly IAttractionRepository _repository;
         private readonly IAttractionService _service;
 
-        public AttractionsController(IAttractionService service)
+        public AttractionsController(IAttractionRepository repository, IAttractionService service)
         {
             _service = service;
+            _repository = repository;
         }
 
-        // GET: api/attractions
         [HttpGet]
+        [Authorize(Roles = "Administrator,Moderator,Partner,RegisteredUser")]
         public async Task<ActionResult<IEnumerable<AttractionDto>>> GetAll([FromQuery] AttractionFilterDto filter)
         {
             // If filter is empty, it returns everything. If populated, it filters.
-            var result = await _service.SearchAsync(filter);
+            var result = await _repository.SearchAsync(filter.SearchQuery, filter.TypeName, filter.CityName, filter.RegionName);
             return Ok(result);
         }
 
-        // GET: api/attractions/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrator,Moderator,Partner,RegisteredUser")]
         public async Task<ActionResult<AttractionDetailDto>> GetById(int id)
         {
             var result = await _service.GetByIdAsync(id);
@@ -35,7 +39,6 @@ namespace Honalolo.Information.WebApi.Controllers
             return Ok(result);
         }
 
-        // POST: api/attractions
         [HttpPost]
         [Authorize(Roles = "Administrator,Moderator,Partner")]
         public async Task<ActionResult<int>> Create([FromBody] CreateAttractionDto dto)
