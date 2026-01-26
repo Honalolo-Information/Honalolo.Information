@@ -86,6 +86,33 @@ namespace Honalolo.Information.Application.Services
             return attraction.Id;
         }
 
+        public async Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter)
+        {
+            // 1. Get Raw Entities from Repository
+            var entities = await _repository.SearchAsync(
+                filter.TypeName,
+                filter.CityName,
+                filter.RegionName,
+                filter.CountryName,
+                filter.ContinentName
+            );
+
+            // 2. Map Entity -> DTO (Breaking the cycle)
+            var dtos = entities.Select(e => new AttractionDto
+            {
+                Id = e.Id,
+                Title = e.Title,
+                Price = e.Price,
+                MainImage = e.ImagesJson, // Or logic to pick first image
+
+                // Flattening relationships safely
+                CityName = e.City?.Name ?? "Unknown",
+                TypeName = e.Type?.TypeName ?? "Unknown"
+            });
+
+            return dtos;
+        }
+
         public async Task<AttractionDetailDto?> GetByIdAsync(int id)
         {
             var entity = await _repository.GetByIdAsync(id);

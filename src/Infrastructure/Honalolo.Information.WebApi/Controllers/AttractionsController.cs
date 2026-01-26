@@ -12,22 +12,24 @@ namespace Honalolo.Information.WebApi.Controllers
     [Route("api/[controller]")]
     public class AttractionsController : ControllerBase
     {
-        private readonly IAttractionRepository _repository;
         private readonly IAttractionService _service;
 
-        public AttractionsController(IAttractionRepository repository, IAttractionService service)
+        public AttractionsController(IAttractionService service)
         {
             _service = service;
-            _repository = repository;
         }
 
         [HttpGet]
         [Authorize(Roles = "Administrator,Moderator,Partner,RegisteredUser")]
         public async Task<ActionResult<IEnumerable<AttractionDto>>> GetAll([FromQuery] AttractionFilterDto filter)
         {
-            // If filter is empty, it returns everything. If populated, it filters.
-            var result = await _repository.SearchAsync(filter.SearchQuery, filter.TypeName, filter.CityName, filter.RegionName);
-            return Ok(result);
+            try
+            {
+                // If filter is empty, it returns everything. If populated, it filters.
+                var result = await _service.SearchAsync(filter);
+                return Ok(result);
+            }
+            catch { return BadRequest("Invalid filter parameters."); }
         }
 
         [HttpGet("{id}")]

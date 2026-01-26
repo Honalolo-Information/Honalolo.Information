@@ -1,7 +1,9 @@
 using Honalolo.Information.Application;
+using Honalolo.Information.Domain.Enums;
 using Honalolo.Information.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace Honalolo.Information.WebApi
@@ -15,21 +17,50 @@ namespace Honalolo.Information.WebApi
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
+            var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            
+            if (jwtSettings != null)
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                var key = Encoding.ASCII.GetBytes(jwtSettings.Key);
+
+                builder.Services.AddAuthentication(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!))
-                };
-            });
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = jwtSettings.Audience,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+                // Add authorization policies
+                builder.Services.AddAuthorizationBuilder()
+                    .AddPolicy("Administrator", policy =>
+                        policy.RequireRole(UserRole.Administrator.ToString()))
+                    .AddPolicy("Moderator", policy =>
+                        policy.RequireRole(UserRole.Moderator.ToString()))
+                    .AddPolicy("Partner", policy =>
+                        policy.RequireRole(UserRole.Partner.ToString()))
+                    .AddPolicy("RegisteredUser", policy =>
+                        policy.RequireRole(UserRole.RegisteredUser.ToString()))
+                    .AddPolicy("Guest", policy =>
+                        policy.RequireRole(UserRole.Guest.ToString()));
+            }
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

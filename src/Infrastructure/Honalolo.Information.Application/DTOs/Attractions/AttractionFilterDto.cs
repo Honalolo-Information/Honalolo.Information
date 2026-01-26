@@ -5,7 +5,6 @@ namespace Honalolo.Information.Application.DTOs.Attractions
 {
     public class AttractionFilterDto
     {
-        public string? SearchQuery { get; set; }
         public string? TypeName { get; set; }
         public string? CityName { get; set; }
         public string? RegionName { get; set; }
