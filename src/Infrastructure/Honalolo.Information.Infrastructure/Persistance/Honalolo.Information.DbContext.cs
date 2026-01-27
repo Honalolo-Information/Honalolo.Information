@@ -1,5 +1,6 @@
 ﻿using Honalolo.Information.Domain.Entities.Attractions;
 using Honalolo.Information.Domain.Entities.Locations;
+using Honalolo.Information.Domain.Entities.Reports;
 using Microsoft.EntityFrameworkCore;
 
 namespace Honalolo.Information.Infrastructure.Persistance
@@ -17,11 +18,13 @@ namespace Honalolo.Information.Infrastructure.Persistance
         public DbSet<Region> Regions { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Continent> Continents { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Trail> Trails { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Food> Foods { get; set; }
+        public DbSet<Museum> Museums { get; set; }
 
         public DbSet<OpeningHour> OpeningHours { get; set; }
         public DbSet<AttractionLanguage> Languages { get; set; }
@@ -177,6 +180,18 @@ namespace Honalolo.Information.Infrastructure.Persistance
                 entity.ToTable("Attraction_types");
                 entity.Property(e => e.Id).HasColumnName("attraction_type_id");
                 entity.Property(e => e.TypeName).HasColumnName("type_name");
+            });
+
+            modelBuilder.Entity<Report>(entity =>
+            {
+                entity.ToTable("Reports");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("report_id");
+                entity.Property(e => e.Title).HasColumnName("title");
+                entity.Property(e => e.GeneratedAt).HasColumnName("generated_at");
+                entity.Property(e => e.RequestedByUserId).HasColumnName("created_by_user_id");
+                entity.Property(e => e.ParametersJson).HasColumnName("parameters_json");
+                entity.Property(e => e.DataJson).HasColumnName("data_json");
             });
 
         }
