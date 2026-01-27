@@ -8,7 +8,6 @@ namespace Honalolo.Information.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    // Tylko Administrator ma dostęp do raportów
     [Authorize(Roles = "Administrator")]
     public class ReportsController : ControllerBase
     {
