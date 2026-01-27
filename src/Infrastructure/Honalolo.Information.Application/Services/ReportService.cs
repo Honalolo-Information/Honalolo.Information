@@ -10,10 +10,12 @@ namespace Honalolo.Information.Application.Services
     public class ReportService : IReportService
     {
         private readonly TouristInfoDbContext _context;
+        private readonly IPdfService _pdfService;
 
-        public ReportService(TouristInfoDbContext context)
+        public ReportService(TouristInfoDbContext context, IPdfService pdfService)
         {
             _context = context;
+            _pdfService = pdfService;
         }
 
         public async Task<ReportDto> GenerateReportAsync(GenerateReportRequestDto request, int adminUserId)
@@ -95,6 +97,17 @@ namespace Honalolo.Information.Application.Services
                 GeneratedAt = entity.GeneratedAt,
                 Stats = JsonSerializer.Deserialize<ReportStatsDto>(entity.DataJson) ?? new ReportStatsDto()
             };
+        }
+
+        public async Task<byte[]?> GetReportPdfAsync(int id)
+        {
+            // 1. Pobierz dane raportu (używamy istniejącej logiki)
+            var reportDto = await GetReportByIdAsync(id);
+
+            if (reportDto == null) return null;
+
+            // 2. Wygeneruj PDF
+            return _pdfService.GenerateReportPdf(reportDto);
         }
     }
 }

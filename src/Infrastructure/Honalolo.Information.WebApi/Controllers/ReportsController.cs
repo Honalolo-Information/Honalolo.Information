@@ -37,5 +37,19 @@ namespace Honalolo.Information.WebApi.Controllers
             if (report == null) return NotFound();
             return Ok(report);
         }
+
+        [HttpGet("{id}/download")]
+        public async Task<IActionResult> DownloadReportPdf(int id)
+        {
+            var pdfBytes = await _reportService.GetReportPdfAsync(id);
+
+            if (pdfBytes == null)
+                return NotFound("Report not found.");
+
+            string fileName = $"report_{id}_{DateTime.Now:yyyyMMdd}.pdf";
+
+            // Zwracamy plik. "application/pdf" mówi przeglądarce, co to za typ.
+            return File(pdfBytes, "application/pdf", fileName);
+        }
     }
 }
