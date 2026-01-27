@@ -107,7 +107,10 @@ namespace Honalolo.Information.Application.Services
                 Id = e.Id,
                 Title = e.Title,
                 Price = e.Price,
-                MainImage = e.ImagesJson, // Or logic to pick first image
+                // W metodzie SearchAsync, wewnątrz .Select:
+                MainImage = (string.IsNullOrEmpty(e.ImagesJson) || e.ImagesJson == "[]")
+                    ? null // lub jakiś default placeholder url
+                    : JsonSerializer.Deserialize<List<string>>(e.ImagesJson)!.FirstOrDefault(),
 
                 // Flattening relationships safely
                 CityName = e.City?.Name ?? "Unknown",

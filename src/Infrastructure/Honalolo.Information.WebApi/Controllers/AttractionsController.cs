@@ -54,5 +54,24 @@ namespace Honalolo.Information.WebApi.Controllers
             var newId = await _service.CreateAsync(dto, userId);
             return CreatedAtAction(nameof(GetById), new { id = newId }, newId);
         }
+
+        [HttpPost("{id}/photos")]
+        [Authorize(Roles = "Administrator,Moderator,Partner")]
+        public async Task<ActionResult<AttractionDetailDto>> UploadPhotos(int id, [FromForm] List<IFormFile> files)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+
+            try
+            {
+                var result = await _service.AddPhotosAsync(id, files, int.Parse(userIdString));
+                if (result == null) return NotFound();
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+        }
     }
 }

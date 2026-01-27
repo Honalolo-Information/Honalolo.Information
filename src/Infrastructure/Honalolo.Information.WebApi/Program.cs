@@ -76,6 +76,8 @@ namespace Honalolo.Information.WebApi
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
