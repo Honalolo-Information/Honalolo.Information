@@ -24,7 +24,6 @@ namespace Honalolo.Information.Infrastructure.Persistance
         public DbSet<Trail> Trails { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Food> Foods { get; set; }
-        public DbSet<Museum> Museums { get; set; }
 
         public DbSet<OpeningHour> OpeningHours { get; set; }
         public DbSet<AttractionLanguage> Languages { get; set; }
