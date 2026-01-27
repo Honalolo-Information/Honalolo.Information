@@ -5,20 +5,24 @@ using Honalolo.Information.Domain.Entities.Attractions;
 using Honalolo.Information.Domain.Entities.Interfaces;
 using Honalolo.Information.Domain.Entities.Locations;
 using Honalolo.Information.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Honalolo.Information.Application.Services
 {
     public class AttractionService : IAttractionService
     {
         private readonly IAttractionRepository _repository;
+        private readonly IFileStorageService _fileStorage;
 
         private readonly TouristInfoDbContext _context;
 
-        public AttractionService(IAttractionRepository repository, TouristInfoDbContext context)
+        public AttractionService(IAttractionRepository repository, TouristInfoDbContext context, IFileStorageService fileStorage)
         {
             _repository = repository;
             _context = context;
+            _fileStorage = fileStorage;
         }
 
         public async Task<int> CreateAsync(CreateAttractionDto dto, int userId)
@@ -195,6 +199,43 @@ namespace Honalolo.Information.Application.Services
             }
 
             return city;
+        }
+
+        public async Task<AttractionDetailDto?> AddPhotosAsync(int attractionId, List<IFormFile> files, int userId)
+        {
+            var attraction = await _repository.GetByIdAsync(attractionId);
+            if (attraction == null) return null;
+
+            // Prosta walidacja: tylko autor lub admin może dodać zdjęcia
+            var user = await _context.Users.FindAsync(userId);
+            if (attraction.AuthorId != userId && user?.Role != Domain.Enums.UserRole.Administrator)
+            {
+                throw new UnauthorizedAccessException("Brak uprawnień do edycji tej atrakcji.");
+            }
+
+            var newPaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    // Używamy naszego serwisu do zapisu
+                    var path = await _fileStorage.SaveFileAsync(file, "attractions");
+                    newPaths.Add(path);
+                }
+            }
+
+            // Aktualizacja JSON-a w bazie
+            var currentImages = string.IsNullOrEmpty(attraction.ImagesJson) || attraction.ImagesJson == "[]"
+                ? new List<string>()
+                : JsonSerializer.Deserialize<List<string>>(attraction.ImagesJson) ?? new List<string>();
+
+            currentImages.AddRange(newPaths);
+            attraction.ImagesJson = JsonSerializer.Serialize(currentImages);
+
+            await _repository.UpdateAsync(attraction);
+
+            return await GetByIdAsync(attractionId);
         }
     }
 }
