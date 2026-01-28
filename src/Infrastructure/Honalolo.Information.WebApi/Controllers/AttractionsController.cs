@@ -3,7 +3,6 @@ using Honalolo.Information.Application.DTOs.Attractions.Honalolo.Information.App
 using Honalolo.Information.Application.Interfaces;
 using Honalolo.Information.Domain.Entities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
