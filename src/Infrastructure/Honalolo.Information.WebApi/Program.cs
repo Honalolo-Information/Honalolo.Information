@@ -2,6 +2,7 @@ using Honalolo.Information.Application;
 using Honalolo.Information.Domain.Enums;
 using Honalolo.Information.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -16,6 +17,19 @@ namespace Honalolo.Information.WebApi
 
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowWebApp",
+                builder =>
+                {
+                    builder.WithOrigins("https://localhost:8000", "https://127.0.0.1:8000",
+                           "http://localhost:8000", "http://127.0.0.1:8000")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials();
+                });
+            });
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
@@ -67,6 +81,8 @@ namespace Honalolo.Information.WebApi
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseCors("AllowWebApp");
 
             if (app.Environment.IsDevelopment())
             {
