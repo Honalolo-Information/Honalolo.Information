@@ -18,6 +18,7 @@ namespace Honalolo.Information.Application
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IPdfService, PdfService>();
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }
