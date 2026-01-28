@@ -31,6 +31,14 @@ namespace Honalolo.Information.Application.Services
                 .Select(x => new LocationDto { Id = x.Id, Name = x.Name, ParentId = x.RegionId })
                 .ToListAsync();
 
+            response.Countries = await _context.Countries
+                .Select(x => new LocationDto { Id = x.Id, Name = x.Name, ParentId = x.ContinentId })
+                .ToListAsync();
+
+            response.Continents = await _context.Continents 
+                .Select(x => new SimpleDto { Id = x.Id, Name = x.Name })
+                .ToListAsync();
+
             response.DifficultyLevels = Enum.GetValues(typeof(DifficultyLevel))
                 .Cast<DifficultyLevel>()
                 .Select(e => new SimpleDto { Id = (int)e, Name = e.ToString() })
