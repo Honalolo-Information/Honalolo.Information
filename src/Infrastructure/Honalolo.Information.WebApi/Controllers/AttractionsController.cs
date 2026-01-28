@@ -3,6 +3,7 @@ using Honalolo.Information.Application.DTOs.Attractions.Honalolo.Information.App
 using Honalolo.Information.Application.Interfaces;
 using Honalolo.Information.Domain.Entities.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -10,6 +11,7 @@ namespace Honalolo.Information.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowWebApp")]
     public class AttractionsController : ControllerBase
     {
         private readonly IAttractionService _service;

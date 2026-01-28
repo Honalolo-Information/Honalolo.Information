@@ -2,6 +2,7 @@
 using Honalolo.Information.Application.Interfaces;
 using Honalolo.Information.Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -9,6 +10,7 @@ namespace Honalolo.Information.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowWebApp")]
     public class UsersController : ControllerBase
     {
         private readonly IAuthService _authService;

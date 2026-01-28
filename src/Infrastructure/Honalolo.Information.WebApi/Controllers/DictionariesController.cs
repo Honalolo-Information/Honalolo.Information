@@ -1,11 +1,13 @@
-﻿using Honalolo.Information.Application.Interfaces;
-using Honalolo.Information.Application.DTOs.General;
+﻿using Honalolo.Information.Application.DTOs.General;
+using Honalolo.Information.Application.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Honalolo.Information.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowWebApp")]
     public class DictionariesController : ControllerBase
     {
         private readonly IDictionaryService _service;

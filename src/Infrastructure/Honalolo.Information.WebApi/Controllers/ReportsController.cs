@@ -1,14 +1,16 @@
-﻿using System.Security.Claims;
-using Honalolo.Information.Application.DTOs.Reports;
+﻿using Honalolo.Information.Application.DTOs.Reports;
 using Honalolo.Information.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Honalolo.Information.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = "Administrator")]
+    [EnableCors("AllowWebApp")]
     public class ReportsController : ControllerBase
     {
         private readonly IReportService _reportService;
