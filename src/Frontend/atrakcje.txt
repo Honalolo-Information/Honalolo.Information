@@ -1,0 +1,31 @@
+CONTINENTS:
+1. Europe
+2. Asia
+3. Africa
+4. North America
+5. South America
+6. Australia
+
+COUNTRIES -> REGIONS -> CITIES:
+Europe:
+    - Poland -> Silesia (Katowice, Bielsko, Pszczyna), Wielkopolska (Poznań )
+    - Germany
+    - Czech Republic
+Asia:
+    - Japan
+    - India
+    - China
+Africa:
+    - Egypt
+    - Morroco
+    - Tunisia
+North America:
+    - USA
+    - Canada
+    - Mexico
+South America:
+    - Brazil
+    - Chile
+    - Argentina
+Australia:
+    - Australia
