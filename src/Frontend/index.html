@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Honalolo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Arima:wght@100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Varta:wght@300..700&display=swap"
+        rel="stylesheet">
+    <style>
+        @import "tailwindcss";
+
+        :root {
+            --accent: #F5B17B;
+            --lgreen: white;
+            --mgreen: #ffffff;
+            --green: white;
+            --white: #FCF9EA;
+            --page-width: 1600px;
+            --rounded: 5px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Varta", sans-serif;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Varta", sans-serif;
+        }
+
+        input, select, textarea, button{
+            font-family: "Helvetica", "Inter", sans-serif;
+            font-size: 14px !important;
+            border-radius: var(--rounded);
+            font-weight: 400 !important;
+        }
+
+        input:focus, select:focus{
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        button{
+            border-radius: var(--rounded);
+            border: none;
+        }
+
+        input[type="file"]{
+            padding: 8px;
+            border: 1px solid black;
+            line-height: 100%;
+        }
+
+        p {
+            max-width: 100ch;
+        }
+
+        h1{
+            font-size: 42px;;
+        }
+
+        body {
+            background: #ececec;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
