@@ -24,7 +24,7 @@ namespace Honalolo.Information.Application.Services
                 .ToListAsync();
 
             response.Regions = await _context.Regions
-                .Select(x => new SimpleDto { Id = x.Id, Name = x.Name })
+                .Select(x => new LocationDto { Id = x.Id, Name = x.Name, ParentId = x.CountryId })
                 .ToListAsync();
 
             response.Cities = await _context.Cities

@@ -4,7 +4,7 @@
     {
         public List<SimpleDto> AttractionTypes { get; set; } = new();
         public List<LocationDto> Cities { get; set; } = new();
-        public List<SimpleDto> Regions { get; set; } = new();
+        public List<LocationDto> Regions { get; set; } = new();
         public List<LocationDto> Countries { get; set; } = new();
         public List<SimpleDto> Continents { get; set; } = new();
         public List<SimpleDto> DifficultyLevels { get; set; } = new();
