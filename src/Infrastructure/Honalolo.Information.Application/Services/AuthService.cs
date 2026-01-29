@@ -39,11 +39,21 @@ namespace Honalolo.Information.Application.Services
                 PasswordHash = passwordHash
             };
 
-            _context.Users.Add(user);
+            var userObj = _context.Users.Add(user);
+
+            User returnUserData = new()
+            {
+                Id = userObj.Entity.Id,
+                UserName = userObj.Entity.UserName,
+                Email = userObj.Entity.Email,
+                Role = userObj.Entity.Role,
+                PasswordHash = userObj.Entity.PasswordHash
+            };
+
             await _context.SaveChangesAsync();
 
             // 4. Login immediately (Generate Token)
-            return GenerateToken(user);
+            return GenerateToken(returnUserData);
         }
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
@@ -55,6 +65,15 @@ namespace Honalolo.Information.Application.Services
             // 2. Verify Password
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 throw new Exception("Invalid credentials.");
+
+            User returnUserData = new()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role,
+                PasswordHash = user.PasswordHash
+            };
 
             // 3. Generate Token
             return GenerateToken(user);
