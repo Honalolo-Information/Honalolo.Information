@@ -43,11 +43,11 @@ namespace Honalolo.Information.Application.Services
 
             User returnUserData = new()
             {
-                Id = userObj.Entity.Id,
-                UserName = userObj.Entity.UserName,
-                Email = userObj.Entity.Email,
-                Role = userObj.Entity.Role,
-                PasswordHash = userObj.Entity.PasswordHash
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role,
+                PasswordHash = user.PasswordHash
             };
 
             await _context.SaveChangesAsync();
