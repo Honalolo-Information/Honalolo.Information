@@ -87,7 +87,7 @@ namespace Honalolo.Information.Application.Services
                     }
                     break;
 
-                case "Food":
+                case "Restaurant":
                     if (dto.FoodDetails != null)
                     {
                         attraction.FoodDetails = new Food
@@ -168,6 +168,22 @@ namespace Honalolo.Information.Application.Services
                 {
                     DistanceMeters = entity.TrailDetails.DistanceMeters,
                     Difficulty = difficultyEnum.ToString()
+                };
+            }
+
+            if (entity.FoodDetails != null)
+            {
+                dto.FoodDetails = new FoodDto
+                {
+                    FoodType = entity.FoodDetails.CuisineType
+                };
+            }
+
+            if (entity.HotelDetails != null)
+            {
+                dto.HotelDetails = new HotelDto
+                {
+                    Amenities = entity.HotelDetails.AmenitiesJson
                 };
             }
 
