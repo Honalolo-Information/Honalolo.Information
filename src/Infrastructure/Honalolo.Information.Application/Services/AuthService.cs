@@ -108,6 +108,7 @@ namespace Honalolo.Information.Application.Services
             {
                 Token = tokenHandler.WriteToken(token),
                 UserName = user.UserName,
+                UserId = user.Id, // Added UserId
                 Role = user.Role.ToString()
             };
         }
