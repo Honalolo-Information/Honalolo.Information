@@ -139,6 +139,10 @@ namespace Honalolo.Information.Application.Services
             var entity = await _repository.GetByIdAsync(id);
             if (entity == null) return null;
 
+            var images = (string.IsNullOrEmpty(entity.ImagesJson) || entity.ImagesJson == "[]")
+                ? new List<string>()
+                : JsonSerializer.Deserialize<List<string>>(entity.ImagesJson) ?? new List<string>();
+
             var dto = new AttractionDetailDto
             {
                 Id = entity.Id,
@@ -149,6 +153,8 @@ namespace Honalolo.Information.Application.Services
                 Price = entity.Price,
                 Languages = entity.Languages.Select(l => l.LanguageName).ToList(),
                 OpeningHours = entity.OpeningHours.Select(o => o.Content).ToList(),
+                Images = images,
+                MainImage = images.FirstOrDefault() ?? string.Empty
             };
 
             if (entity.EventDetails != null)
