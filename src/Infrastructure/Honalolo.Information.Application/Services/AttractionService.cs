@@ -120,9 +120,11 @@ namespace Honalolo.Information.Application.Services
             // 2. Map Entity -> DTO (Breaking the cycle)
             var dtos = entities.Select(e => new AttractionDto
             {
+                
                 Id = e.Id,
                 Title = e.Title,
                 Price = e.Price,
+                AuthorId = e.AuthorId, // Added AuthorId mapping
                 MainImage = (string.IsNullOrEmpty(e.ImagesJson) || e.ImagesJson == "[]")
                     ? null
                     : JsonSerializer.Deserialize<List<string>>(e.ImagesJson)!.FirstOrDefault(),
@@ -151,6 +153,7 @@ namespace Honalolo.Information.Application.Services
                 CityName = entity.City?.Name ?? "Unknown",
                 TypeName = entity.Type?.TypeName ?? "Unknown",
                 Price = entity.Price,
+                AuthorId = entity.AuthorId, // Added AuthorId mapping
                 Languages = entity.Languages.Select(l => l.LanguageName).ToList(),
                 OpeningHours = entity.OpeningHours.Select(o => o.Content).ToList(),
                 Images = images,
