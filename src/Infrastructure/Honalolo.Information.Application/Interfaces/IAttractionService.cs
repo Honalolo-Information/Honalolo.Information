@@ -8,7 +8,7 @@ namespace Honalolo.Information.Application.Interfaces
     public interface IAttractionService
     {
         Task<AttractionDetailDto?> GetByIdAsync(int id);
-        Task<int> CreateAsync(CreateAttractionDto dto, int userId);
+        Task<AttractionDetailDto> CreateAsync(CreateAttractionDto dto, int userId);
         Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter);
         Task<AttractionDetailDto?> AddPhotosAsync(int attractionId, List<IFormFile> files, int userId);
     }

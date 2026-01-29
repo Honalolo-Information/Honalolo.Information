@@ -25,69 +25,85 @@ namespace Honalolo.Information.Application.Services
             _fileStorage = fileStorage;
         }
 
-        public async Task<int> CreateAsync(CreateAttractionDto dto, int userId)
+        public async Task<AttractionDetailDto> CreateAsync(CreateAttractionDto dto, int userId)
         {
-            // A. Handle Attraction Type (Find or Create)
-            var type = await _context.AttractionTypes
+            // Fix 1: Find AttractionType by TypeName (string), not by ID (int)
+            var attractionType = await _context.AttractionTypes
                 .FirstOrDefaultAsync(t => t.TypeName == dto.TypeName);
 
-            if (type == null)
-            {
-                type = new AttractionType { TypeName = dto.TypeName };
-                _context.AttractionTypes.Add(type);
-                await _context.SaveChangesAsync();
-            }
+            if (attractionType == null)
+                throw new ArgumentException($"Invalid Attraction Type: {dto.TypeName}");
 
-            // B. Handle Location Hierarchy (Find or Create Chain)
+            // Fix 2: Resolve Location correctly (String -> Entity -> Id)
             var city = await GetOrCreateLocationChainAsync(dto);
 
-            // C. Create Attraction
+            // Fix 3: Create Attraction base entity first (Composition over Inheritance logic)
             var attraction = new Attraction
             {
                 Title = dto.Title,
                 Description = dto.Description,
                 Price = dto.Price,
+                CityId = city.Id,      // Use resolved City ID
+                TypeId = attractionType.Id, // Use resolved Type ID
                 AuthorId = userId,
-                TypeId = type.Id,     // Use the resolved ID
-                CityId = city.Id,     // Use the resolved ID
-                OpeningHours = new List<OpeningHour>(),
-                Languages = new List<AttractionLanguage>()
+                ImagesJson = "[]" // Default empty JSON array
             };
 
-            if (dto.EventDetails != null)
+            // Fix 4: Attach related details based on TypeName
+            switch (attractionType.TypeName)
             {
-                attraction.EventDetails = new Event
-                {
-                    StartDate = dto.EventDetails.StartDate,
-                    EndDate = dto.EventDetails.EndDate,
-                    EventType = "General"
-                };
-            }
-            else if (dto.TrailDetails != null)
-            {
-                attraction.TrailDetails = new Trail
-                {
-                    DistanceMeters = dto.TrailDetails.DistanceMeters,
-                    DifficultyLevelId = dto.TrailDetails.DifficultyLevelId,
-                };
-            }
-            else if (dto.HotelDetails != null)
-            {
-                attraction.HotelDetails = new Hotel
-                {
-                    AmenitiesJson = dto.HotelDetails.Amenities
-                };
-            }
-            else if (dto.FoodDetails != null)
-            {
-                attraction.FoodDetails = new Food
-                {
-                    CuisineType = dto.FoodDetails.FoodType
-                };
+                case "Event":
+                    if (dto.EventDetails == null)
+                        throw new ArgumentException("Event details are required for type 'Event'");
+
+                    attraction.EventDetails = new Event
+                    {
+                        StartDate = dto.EventDetails.StartDate,
+                        EndDate = dto.EventDetails.EndDate,
+                        EventType = "General" // Default value as it's required but missing in DTO
+                    };
+                    break;
+
+                case "Trail":
+                    if (dto.TrailDetails != null)
+                    {
+                        attraction.TrailDetails = new Trail
+                        {
+                            DistanceMeters = dto.TrailDetails.DistanceMeters,
+                            DifficultyLevelId = dto.TrailDetails.DifficultyLevelId,
+                            StartingPoint = "Unknown", // Required in Entity, missing in DTO
+                            EndpointPoint = "Unknown"  // Required in Entity, missing in DTO
+                        };
+                    }
+                    break;
+
+                case "Hotel":
+                    if (dto.HotelDetails != null)
+                    {
+                        attraction.HotelDetails = new Hotel
+                        {
+                            AmenitiesJson = dto.HotelDetails.Amenities
+                        };
+                    }
+                    break;
+
+                case "Food":
+                    if (dto.FoodDetails != null)
+                    {
+                        attraction.FoodDetails = new Food
+                        {
+                            CuisineType = dto.FoodDetails.FoodType
+                        };
+                    }
+                    break;
+                
+                // For "Museum", "Park" etc, no extra details needed or not implemented yet.
             }
 
+            // 4. Save - EF Core will insert Attraction and the attached related entity (Event/Trail/etc.)
             await _repository.AddAsync(attraction);
-            return attraction.Id;
+
+            return await GetByIdAsync(attraction.Id);
         }
 
         public async Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter)
