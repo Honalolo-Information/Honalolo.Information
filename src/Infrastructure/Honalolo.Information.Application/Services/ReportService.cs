@@ -58,7 +58,12 @@ namespace Honalolo.Information.Application.Services
                 MostExpensiveAttractions = attractions
                     .OrderByDescending(a => a.Price)
                     .Take(5)
-                    .Select(a => $"{a.Title} ({a.Price} PLN)")
+                    .Select(a => new AttractionSummaryDto
+                    {
+                        Title = a.Title,
+                        Price = a.Price,
+                        EventDate = a.EventDetails != null ? a.EventDetails.StartDate : null
+                    })
                     .ToList()
             };
 
@@ -81,7 +86,8 @@ namespace Honalolo.Information.Application.Services
                 Id = reportEntity.Id,
                 Title = reportEntity.Title,
                 GeneratedAt = reportEntity.GeneratedAt,
-                Stats = stats
+                Stats = stats,
+                Parameters = request
             };
         }
 
@@ -95,7 +101,8 @@ namespace Honalolo.Information.Application.Services
                 Id = entity.Id,
                 Title = entity.Title,
                 GeneratedAt = entity.GeneratedAt,
-                Stats = JsonSerializer.Deserialize<ReportStatsDto>(entity.DataJson) ?? new ReportStatsDto()
+                Stats = JsonSerializer.Deserialize<ReportStatsDto>(entity.DataJson) ?? new ReportStatsDto(),
+                Parameters = JsonSerializer.Deserialize<GenerateReportRequestDto>(entity.ParametersJson)
             };
         }
 
