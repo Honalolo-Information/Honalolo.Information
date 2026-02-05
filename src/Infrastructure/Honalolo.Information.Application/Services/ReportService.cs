@@ -108,12 +108,10 @@ namespace Honalolo.Information.Application.Services
 
         public async Task<byte[]?> GetReportPdfAsync(int id)
         {
-            // 1. Pobierz dane raportu (używamy istniejącej logiki)
             var reportDto = await GetReportByIdAsync(id);
 
             if (reportDto == null) return null;
 
-            // 2. Wygeneruj PDF
             return _pdfService.GenerateReportPdf(reportDto);
         }
     }
