@@ -131,7 +131,15 @@ namespace Honalolo.Information.Application.Services
                     ? null
                     : JsonSerializer.Deserialize<List<string>>(e.ImagesJson)!.FirstOrDefault(),
 
+                CityId = e.City?.Id ?? 0,
                 CityName = e.City?.Name ?? "Unknown",
+                RegionId = e.City?.Region?.Id ?? 0,
+                RegionName = e.City?.Region?.Name ?? "Unknown",
+                CountryId = e.City?.Region?.Country?.Id ?? 0,
+                CountryName = e.City?.Region?.Country?.Name ?? "Unknown",
+                ContinentId = e.City?.Region?.Country?.Continent?.Id ?? 0,
+                ContinentName = e.City?.Region?.Country?.Continent?.Name ?? "Unknown",
+
                 TypeName = e.Type?.TypeName ?? "Unknown",
                 OpeningHours = e.OpeningHours != null ? e.OpeningHours.Select(o => o.Content).ToList() : new List<string>(),
 
@@ -160,7 +168,15 @@ namespace Honalolo.Information.Application.Services
                 Id = entity.Id,
                 Title = entity.Title,
                 Description = entity.Description,
+                CityId = entity.City?.Id ?? 0,
                 CityName = entity.City?.Name ?? "Unknown",
+                RegionId = entity.City?.Region?.Id ?? 0,
+                RegionName = entity.City?.Region?.Name ?? "Unknown",
+                CountryId = entity.City?.Region?.Country?.Id ?? 0,
+                CountryName = entity.City?.Region?.Country?.Name ?? "Unknown",
+                ContinentId = entity.City?.Region?.Country?.Continent?.Id ?? 0,
+                ContinentName = entity.City?.Region?.Country?.Continent?.Name ?? "Unknown",
+
                 TypeName = entity.Type?.TypeName ?? "Unknown",
                 Price = entity.Price,
                 AuthorId = entity.AuthorId, // Added AuthorId mapping
