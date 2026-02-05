@@ -76,6 +76,26 @@ namespace Honalolo.Information.WebApi.Controllers
             }
         }
 
+        [HttpPut("{id}/photos")]
+        [Authorize(Roles = "Administrator,Moderator,Partner")]
+        public async Task<ActionResult<AttractionDetailDto>> OverwritePhotos(int id, [FromForm] List<IFormFile> files)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+
+            try
+            {
+                // Logic is: Delete old ones -> Save new ones
+                var result = await _service.UpdatePhotosAsync(id, files, int.Parse(userIdString));
+                if (result == null) return NotFound();
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+        }
+
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator,Moderator,Partner,RegisteredUser")]
         public async Task<ActionResult<AttractionDetailDto>> Update(int id, [FromBody] UpdateAttractionDto dto)

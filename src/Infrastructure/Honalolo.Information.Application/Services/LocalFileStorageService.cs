@@ -30,5 +30,27 @@ namespace Honalolo.Information.Infrastructure.Services
 
             return $"/uploads/{folderName}/{uniqueFileName}";
         }
+
+        public Task DeleteFileAsync(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath)) return Task.CompletedTask;
+
+            // path comes in as "/uploads/folder/file.jpg"
+            // we need physical path
+            var rootPath = Directory.GetCurrentDirectory();
+            var wwwrootPath = Path.Combine(rootPath, "wwwroot");
+            
+            // Remove starting slash if present to combine correctly
+            string relativePath = filePath.StartsWith("/") ? filePath.Substring(1) : filePath;
+            
+            var fullPath = Path.Combine(wwwrootPath, relativePath);
+
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+
+            return Task.CompletedTask;
+        }
     }
 }

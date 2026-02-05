@@ -13,5 +13,6 @@ namespace Honalolo.Information.Application.Interfaces
         Task<bool> DeleteAsync(int id, int userId, bool isAdmin);
         Task<IEnumerable<AttractionDto>> SearchAsync(AttractionFilterDto filter);
         Task<AttractionDetailDto?> AddPhotosAsync(int attractionId, List<IFormFile> files, int userId);
+        Task<AttractionDetailDto?> UpdatePhotosAsync(int attractionId, List<IFormFile> files, int userId);
     }
 }

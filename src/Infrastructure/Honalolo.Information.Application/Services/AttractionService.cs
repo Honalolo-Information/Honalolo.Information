@@ -307,6 +307,49 @@ namespace Honalolo.Information.Application.Services
             return await GetByIdAsync(attractionId);
         }
 
+        public async Task<AttractionDetailDto?> UpdatePhotosAsync(int attractionId, List<IFormFile> files, int userId)
+        {
+            var attraction = await _repository.GetByIdAsync(attractionId);
+            if (attraction == null) return null;
+
+            // Authorization: Author or Admin
+            // NOTE: We need to access role manually or assume permission helper if logic is complex. 
+            // For now, mirroring AddPhotos Logic
+             var user = await _context.Users.FindAsync(userId);
+             if (attraction.AuthorId != userId && user?.Role != Domain.Enums.UserRole.Administrator)
+             {
+                 throw new UnauthorizedAccessException("Brak uprawnień do edycji tej atrakcji.");
+             }
+
+            // 1. Get current images
+             var currentImages = string.IsNullOrEmpty(attraction.ImagesJson) || attraction.ImagesJson == "[]"
+                ? new List<string>()
+                : JsonSerializer.Deserialize<List<string>>(attraction.ImagesJson) ?? new List<string>();
+
+            // 2. Delete ALL existing images from file storage
+            foreach (var oldPath in currentImages)
+            {
+               await _fileStorage.DeleteFileAsync(oldPath);
+            }
+
+            // 3. Save NEW images
+            var newPaths = new List<string>();
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var path = await _fileStorage.SaveFileAsync(file, "attractions");
+                     newPaths.Add(path);
+                }
+            }
+
+            // 4. Update Database Record
+            attraction.ImagesJson = JsonSerializer.Serialize(newPaths);
+            await _repository.UpdateAsync(attraction);
+
+            return await GetByIdAsync(attractionId);
+        }
+
         public async Task<AttractionDetailDto?> UpdateAsync(int id, UpdateAttractionDto dto, int userId, bool isAdmin)
         {
             var attraction = await _context.Attractions
