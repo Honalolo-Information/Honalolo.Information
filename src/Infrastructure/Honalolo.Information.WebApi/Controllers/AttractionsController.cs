@@ -75,5 +75,54 @@ namespace Honalolo.Information.WebApi.Controllers
                 return Forbid();
             }
         }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator,Moderator,Partner,RegisteredUser")]
+        public async Task<ActionResult<AttractionDetailDto>> Update(int id, [FromBody] UpdateAttractionDto dto)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+
+            int userId = int.Parse(userIdString);
+            bool isAdmin = userRole == "Administrator";
+
+            try
+            {
+                var result = await _service.UpdateAsync(id, dto, userId, isAdmin);
+                if (result == null) return NotFound();
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> Delete(int id)
+        {
+             // Although Authorize attribute handles role check, we pass flags to service if needed for consistency or logging
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+             if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+             int userId = int.Parse(userIdString);
+             
+             // Since [Authorize(Roles = "Administrator")] is already there, we know it's an admin
+             bool isAdmin = true;
+
+            try
+            {
+                var result = await _service.DeleteAsync(id, userId, isAdmin);
+                if (!result) return NotFound();
+                return NoContent();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                 // Should be caught by the attribute, but double safety
+                return Forbid();
+            }
+        }
     }
 }

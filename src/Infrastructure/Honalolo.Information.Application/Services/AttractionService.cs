@@ -287,5 +287,131 @@ namespace Honalolo.Information.Application.Services
 
             return await GetByIdAsync(attractionId);
         }
+
+        public async Task<AttractionDetailDto?> UpdateAsync(int id, UpdateAttractionDto dto, int userId, bool isAdmin)
+        {
+            var attraction = await _context.Attractions
+                .Include(a => a.Type)
+                .Include(a => a.EventDetails)
+                .Include(a => a.TrailDetails)
+                .Include(a => a.HotelDetails)
+                .Include(a => a.FoodDetails)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (attraction == null) return null;
+
+            // Authorization: Author or Admin
+            if (attraction.AuthorId != userId && !isAdmin)
+            {
+                throw new UnauthorizedAccessException("You are not allowed to edit this attraction.");
+            }
+
+            // Update basic fields
+            attraction.Title = dto.Title;
+            attraction.Description = dto.Description;
+            attraction.Price = dto.Price;
+
+            // Update Location if provided (assuming validation is handled elsewhere or via similar logic to Create)
+            if (!string.IsNullOrEmpty(dto.CityName) && !string.IsNullOrEmpty(dto.RegionName) && !string.IsNullOrEmpty(dto.CountryName) && !string.IsNullOrEmpty(dto.ContinentName))
+            {
+                // Re-use logic to resolve city
+                // Note: Ideally, this logic should be extracted to avoid duplication, but for now we inline or call similar methods
+                 var city = await GetOrCreateLocationChainAsync(new CreateAttractionDto 
+                 { 
+                     CityName = dto.CityName, 
+                     RegionName = dto.RegionName, 
+                     CountryName = dto.CountryName, 
+                     ContinentName = dto.ContinentName 
+                 });
+                 attraction.CityId = city.Id;
+            }
+
+
+            // Update specific details based on Type
+            switch (attraction.Type.TypeName)
+            {
+                case "Event":
+                    if (dto.EventDetails != null && attraction.EventDetails != null)
+                    {
+                        attraction.EventDetails.StartDate = dto.EventDetails.StartDate;
+                        attraction.EventDetails.EndDate = dto.EventDetails.EndDate;
+                    }
+                    else if (dto.EventDetails != null && attraction.EventDetails == null)
+                    {
+                         attraction.EventDetails = new Event
+                        {
+                            StartDate = dto.EventDetails.StartDate,
+                            EndDate = dto.EventDetails.EndDate,
+                            EventType = "General"
+                        };
+                    }
+                    break;
+
+                case "Trail":
+                    if (dto.TrailDetails != null && attraction.TrailDetails != null)
+                    {
+                        attraction.TrailDetails.DistanceMeters = dto.TrailDetails.DistanceMeters;
+                        attraction.TrailDetails.DifficultyLevelId = dto.TrailDetails.DifficultyLevelId;
+                    }
+                    else if (dto.TrailDetails != null && attraction.TrailDetails == null)
+                    {
+                        attraction.TrailDetails = new Trail
+                        {
+                            DistanceMeters = dto.TrailDetails.DistanceMeters,
+                            DifficultyLevelId = dto.TrailDetails.DifficultyLevelId,
+                            StartingPoint = "Unknown",
+                            EndpointPoint = "Unknown"
+                        };
+                    }
+                    break;
+
+                case "Hotel":
+                    if (dto.HotelDetails != null && attraction.HotelDetails != null)
+                    {
+                        attraction.HotelDetails.AmenitiesJson = dto.HotelDetails.Amenities;
+                    }
+                    else if (dto.HotelDetails != null && attraction.HotelDetails == null)
+                    {
+                         attraction.HotelDetails = new Hotel
+                        {
+                            AmenitiesJson = dto.HotelDetails.Amenities
+                        };
+                    }
+                    break;
+
+                case "Restaurant":
+                    if (dto.FoodDetails != null && attraction.FoodDetails != null)
+                    {
+                        attraction.FoodDetails.CuisineType = dto.FoodDetails.FoodType;
+                    }
+                     else if (dto.FoodDetails != null && attraction.FoodDetails == null)
+                    {
+                         attraction.FoodDetails = new Food
+                        {
+                            CuisineType = dto.FoodDetails.FoodType
+                        };
+                    }
+                    break;
+            }
+
+            await _repository.UpdateAsync(attraction);
+
+            return await GetByIdAsync(id);
+        }
+
+        public async Task<bool> DeleteAsync(int id, int userId, bool isAdmin)
+        {
+            var attraction = await _repository.GetByIdAsync(id);
+            if (attraction == null) return false;
+
+            // Authorization: ONLY Admin can delete
+            if (!isAdmin)
+            {
+                throw new UnauthorizedAccessException("Only administrators can delete attractions.");
+            }
+
+            await _repository.DeleteAsync(id);
+            return true;
+        }
     }
 }
