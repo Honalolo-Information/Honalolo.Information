@@ -142,6 +142,7 @@ namespace Honalolo.Information.Application.Services
 
                 TypeName = e.Type?.TypeName ?? "Unknown",
                 OpeningHours = e.OpeningHours != null ? e.OpeningHours.Select(o => o.Content).ToList() : new List<string>(),
+                Languages = e.Languages != null ? e.Languages.Select(l => l.LanguageName).ToList() : new List<string>(),
 
                 // Map specific details
                 EventStartDate = e.EventDetails?.StartDate,

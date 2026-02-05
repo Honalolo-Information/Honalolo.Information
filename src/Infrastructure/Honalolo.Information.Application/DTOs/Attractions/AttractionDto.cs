@@ -17,6 +17,7 @@
         public string MainImage { get; set; } = string.Empty; // Extracted from JSON
         public int AuthorId { get; set; }
         public List<string> OpeningHours { get; set; } = new();
+        public List<string> Languages { get; set; } = new();
 
         // Specific properties flattened for list view if needed, or kept structural
         public DateTime? EventStartDate { get; set; }
