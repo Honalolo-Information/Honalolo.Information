@@ -1,8 +1,33 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import image from "../assets/register.jpg";
 import Attraction, { Point } from "../components/Attraction";
+import { useParams } from "react-router";
+import AuthContext from "../contexts/AuthContext";
+import getAttraction from "../../api/requests/getAttraction";
 
 export default function AttractionPage() {
+    const {id} = useParams();
+
+    const auth = useContext(AuthContext)
+    const [data, setData] = useState([]);
+    const [more, setMore] = useState([]);
+
+    useEffect(() => {
+        handleLoad();
+    }, [auth.value]);
+
+    async function handleLoad() {
+        const r = await getAttraction(auth.value, id);
+        console.log(r);
+        setData(r);
+
+        let m = await getAttraction(auth.value, "");
+        m = m.filter(item => item.id != id);
+        m = m.slice(0,4);
+        setMore(m);
+    }
+
+
     return <div className="mx-auto p-4 md:p-8 flex flex-col gap-4">
         <Gallery />
 
@@ -13,9 +38,9 @@ export default function AttractionPage() {
                     icon="map-pin"
                     label="Chłopia, Chłopowice"
                 />
-                <h1 className="mt-2 font-medium text-[24px] md:text-[36px] ">Lasy Murckowskie</h1>
+                <h1 className="mt-2 font-medium text-[24px] md:text-[36px] ">{data.title}</h1>
 
-                <p className="mt-2 !max-w-[60ch]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa iste numquam ratione, dolorum, eveniet ducimus similique perspiciatis unde temporibus officia saepe. Quam vero modi debitis cumque blanditiis soluta accusamus rem cum voluptatem culpa corrupti dicta, consequatur repudiandae nobis? Laboriosam saepe illum ipsa quaerat quasi atque eaque vel itaque quod culpa?</p>
+                <p className="mt-2 !max-w-[60ch]">{data.description}</p>
             </div>
 
             <div className="rounded-[var(--rounded)] flex flex-col gap-3">
@@ -50,10 +75,7 @@ export default function AttractionPage() {
         <div className="mt-7 flex flex-col gap-4">
             <h2 className="font-medium text-[24px] md:text-[32px]">Zobacz więcej</h2>
             <div className="m-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
+                {more.map((m) => <Attraction key={m.id} data={m} />)}
             </div>
         </div>
     </div>
@@ -65,8 +87,8 @@ function Gallery() {
         <img src={currentImage} className="rounded-[var(--rounded)] w-full md:h-[80vh] object-cover aspect-[16/9] flex border-1" />
 
         <div className="flex md:flex-col gap-2 h-full overflow-x-auto md:overflow-y-auto">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(() => {
-                return <img src={image} onClick={() => setCurrentImage(image)} className="w-[80px] md:w-[100px] lg:w-[150px] aspect-[1] object-cover rounded-[var(--rounded)] border-1" />
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
+                return <img key={i} src={image} onClick={() => setCurrentImage(image)} className="w-[80px] md:w-[100px] lg:w-[150px] aspect-[1] object-cover rounded-[var(--rounded)] border-1" />
             })}
         </div>
     </div>
