@@ -54,18 +54,40 @@ namespace Honalolo.Information.Application.Services
                 AveragePrice = attractions.Any() ? Math.Round(attractions.Average(a => a.Price), 2) : 0,
                 CountByType = attractions
                     .GroupBy(a => a.Type.TypeName)
-                    .ToDictionary(g => g.Key, g => g.Count()),
-                MostExpensiveAttractions = attractions
+                    .ToDictionary(g => g.Key, g => g.Count())
+            };
+
+            // Calculate specific stats based on report type
+            if (request.Type == ReportType.Top5Expensive)
+            {
+                stats.MostExpensiveAttractions = attractions
                     .OrderByDescending(a => a.Price)
                     .Take(5)
                     .Select(a => new AttractionSummaryDto
                     {
+                        Id = a.Id,
                         Title = a.Title,
                         Price = a.Price,
+                        TypeName = a.Type?.TypeName ?? "Unknown",
+                        CityName = a.City?.Name ?? "Unknown",
                         EventDate = a.EventDetails != null ? a.EventDetails.StartDate : null
                     })
-                    .ToList()
-            };
+                    .ToList();
+            }
+            else if (request.Type == ReportType.DetailedList)
+            {
+                stats.AllMatchingAttractions = attractions
+                    .Select(a => new AttractionSummaryDto
+                    {
+                        Id = a.Id,
+                        Title = a.Title,
+                        Price = a.Price,
+                        TypeName = a.Type?.TypeName ?? "Unknown",
+                        CityName = a.City?.Name ?? "Unknown",
+                        EventDate = a.EventDetails != null ? a.EventDetails.StartDate : null
+                    })
+                    .ToList();
+            }
 
             // 4. Save Report to DB
             var reportEntity = new Report

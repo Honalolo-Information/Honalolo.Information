@@ -2,8 +2,15 @@
 
 namespace Honalolo.Information.Application.DTOs.Reports
 {
+    public enum ReportType
+    {
+        Top5Expensive = 0,
+        DetailedList = 1
+    }
+
     public class GenerateReportRequestDto
     {
+        public ReportType Type { get; set; } = ReportType.Top5Expensive; // Default to original behavior
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public decimal? MinPrice { get; set; }
@@ -13,8 +20,11 @@ namespace Honalolo.Information.Application.DTOs.Reports
 
     public class AttractionSummaryDto
     {
+        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public decimal Price { get; set; }
+        public string TypeName { get; set; } = string.Empty;
+        public string CityName { get; set; } = string.Empty;
         public DateTime? EventDate { get; set; }
     }
 
@@ -24,6 +34,7 @@ namespace Honalolo.Information.Application.DTOs.Reports
         public decimal AveragePrice { get; set; }
         public Dictionary<string, int> CountByType { get; set; } = new();
         public List<AttractionSummaryDto> MostExpensiveAttractions { get; set; } = new();
+        public List<AttractionSummaryDto> AllMatchingAttractions { get; set; } = new();
     }
 
     public class ReportDto
