@@ -28,6 +28,10 @@ namespace Honalolo.Information.Application.DTOs.Attractions
             public CreateTrailDto? TrailDetails { get; set; }
             public CreateHotelDto? HotelDetails { get; set; }
             public CreateFoodDto? FoodDetails { get; set; }
+
+            // New fields for additional details
+            public List<string> OpeningHours { get; set; } = new();
+            public List<string> Languages { get; set; } = new();
         }
     }
 

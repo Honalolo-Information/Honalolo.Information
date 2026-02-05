@@ -46,7 +46,9 @@ namespace Honalolo.Information.Application.Services
                 CityId = city.Id,      // Use resolved City ID
                 TypeId = attractionType.Id, // Use resolved Type ID
                 AuthorId = userId,
-                ImagesJson = "[]" // Default empty JSON array
+                ImagesJson = "[]", // Default empty JSON array
+                OpeningHours = dto.OpeningHours.Select(oh => new OpeningHour { Content = oh }).ToList(),
+                Languages = dto.Languages.Select(l => new AttractionLanguage { LanguageName = l }).ToList()
             };
 
             // Fix 4: Attach related details based on TypeName
