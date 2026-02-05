@@ -40,6 +40,13 @@ namespace Honalolo.Information.WebApi.Controllers
             return Ok(report);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ReportListItemDto>>> GetAllReports()
+        {
+            var reports = await _reportService.GetAllReportsAsync();
+            return Ok(reports);
+        }
+
         [HttpGet("{id}/download")]
         public async Task<IActionResult> DownloadReportPdf(int id)
         {

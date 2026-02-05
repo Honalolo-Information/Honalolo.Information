@@ -45,4 +45,12 @@ namespace Honalolo.Information.Application.DTOs.Reports
         public ReportStatsDto Stats { get; set; }
         public GenerateReportRequestDto Parameters { get; set; }
     }
+
+    public class ReportListItemDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public DateTime GeneratedAt { get; set; }
+        public GenerateReportRequestDto Parameters { get; set; }
+    }
 }

@@ -128,6 +128,23 @@ namespace Honalolo.Information.Application.Services
             };
         }
 
+        public async Task<IEnumerable<ReportListItemDto>> GetAllReportsAsync()
+        {
+            var entities = await _context.Reports
+                .OrderByDescending(r => r.GeneratedAt)
+                .ToListAsync();
+
+            return entities.Select(e => new ReportListItemDto
+            {
+                Id = e.Id,
+                Title = e.Title,
+                GeneratedAt = e.GeneratedAt,
+                Parameters = string.IsNullOrEmpty(e.ParametersJson) 
+                    ? new GenerateReportRequestDto() 
+                    : JsonSerializer.Deserialize<GenerateReportRequestDto>(e.ParametersJson)!
+            });
+        }
+
         public async Task<byte[]?> GetReportPdfAsync(int id)
         {
             var reportDto = await GetReportByIdAsync(id);
