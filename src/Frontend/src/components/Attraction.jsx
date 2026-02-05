@@ -4,12 +4,14 @@ import Badge from "./Badge";
 import Button from "./Button";
 import { Link } from "react-router";
 
-export default function Attraction() {
-    return <Link to="/attraction/elo" className="rounded-[var(--rounded)] bg-white border-1">
+export default function Attraction(props) {
+    if(!props.data) return;
+
+    return <Link to={`/attraction/${props.data.id}`} className="rounded-[var(--rounded)] bg-white border-1">
         <div className="relative border-b-1">
             <img className="w-full aspect-[16/9] rounded-t-[var(--rounded)] object-cover" src={image} />
 
-            <Badge className="!border-0 absolute left-2 top-2 bg-[var(--lgreen)]">SZLAK</Badge>
+            <Badge className="!border-0 absolute left-2 top-2 bg-[var(--lgreen)]">{props.data.typeName}</Badge>
         </div>
 
         <div className="p-3 flex flex-col gap-1 items-start">
@@ -17,13 +19,13 @@ export default function Attraction() {
                 <Point
                     className="text-[#333]"
                     icon="map-pin"
-                    label="Chłopia, Chłopowice"
+                    label={props.data.cityName}
                 />
                 <Point icon="watch" label="5 godzin" />
                 <Point icon="life-buoy" label="Trudny" />
             </div>
 
-            <h3 className="mt-1 text-[24px]">Nazwa atrakcji</h3>
+            <h3 className="mt-1 text-[24px]">{props.data.title}</h3>
         </div>
     </Link>
 }

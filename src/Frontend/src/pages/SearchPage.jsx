@@ -2,6 +2,9 @@ import Attraction from "../components/Attraction";
 import Button from "../components/Button";
 import Select from "../components/Select";
 import Input from "../components/Input";
+import { useContext, useEffect, useState } from "react";
+import getAttraction from "../../api/requests/getAttraction";
+import AuthContext from "../contexts/AuthContext";
 
 const continents = [
     { label: "Chłopea" }
@@ -26,14 +29,27 @@ const types = [
 ];
 
 export default function SearchPage() {
+    const auth = useContext(AuthContext)
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        handleLoad();
+    }, [auth.value]);
+
+    async function handleLoad() {
+        const r = await getAttraction(auth.value, "");
+        console.log(r);
+        setData(r);
+    }
+
     return <div className="h-[calc(100vh-58px)] grid grid-cols-[1fr_400px]">
         <div className={
             "p-8 h-[calc(100vh-58px)] " +
             "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 gap-y-8 " +
             "overflow-y-auto "
         }>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => {
-                return <Attraction key={index} />
+            {data.map((item, index) => {
+                return <Attraction data={item} key={index} />
             })}
         </div>
 

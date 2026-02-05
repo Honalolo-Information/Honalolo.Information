@@ -1,19 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthContext from "./contexts/AuthContext"
 
 function App(props) {
-  const [auth, setAuth] = useState(false);
+    const [userId, setUserId] = useState("");
+    const [username, setUsername] = useState("");
+    const [auth, setAuth] = useState(false);
 
-  const authValue = {
-    value: auth,
-    setValue: setAuth,
-  };
+    const authValue = {
+        userId, setUserId,
+        value: auth,
+        setValue: setAuth,
+        username: username,
+        setUsername: setUsername
+    };
 
-  return (
-      <AuthContext.Provider value={authValue} >
-        {props.children}
-      </AuthContext.Provider>
-  )
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        const storedUsername = localStorage.getItem("username");
+        const storedUserId = localStorage.getItem("userId");
+
+        if (token) {
+            setAuth(token);
+        }
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+    }, []);
+
+    return (
+        <AuthContext.Provider value={authValue} >
+            {props.children}
+        </AuthContext.Provider>
+    )
 }
 
 export default App

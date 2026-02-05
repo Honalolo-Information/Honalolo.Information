@@ -2,11 +2,30 @@ import FeatherIcon from "feather-icons-react";
 import Attraction from "../components/Attraction";
 import Button from "../components/Button";
 import { Link } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../contexts/AuthContext";
+import getAttraction from "../../api/requests/getAttraction";
+import getProfile from "../../api/requests/getProfile";
 
 export default function ProfilePage() {
-    return <div className="p-4 pt-8 max-w-[900px] mx-auto">
+    const auth = useContext(AuthContext)
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        handleLoad();
+    }, [auth.value]);
+
+    async function handleLoad() {
+    console.log(auth);
+        const r = await getProfile(auth.value);
+
+        console.log(r);
+        // setData(r);
+    }
+
+    return <div className="p-4 pt-8 mx-auto">
         <div className="flex items-center gap-8">
-            <Avatar />
+            {/* <Avatar /> */}
             <h1>Piotr Juszkiewicz</h1>
         </div>
 
@@ -18,19 +37,10 @@ export default function ProfilePage() {
                 </Link>
             </div>
 
-            <div className="m-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-3">
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
-                <Attraction />
+            <div className="m-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+                {data.filter((item) => item.authorId === auth.userId).map((attraction) => (
+                    <Attraction key={attraction.id} data={attraction} />
+                ))}
             </div>
         </div>
     </div>

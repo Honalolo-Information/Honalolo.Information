@@ -14,12 +14,6 @@ export default function HomePage() {
             }>
                 <h1 className="font-medium text-[42px] md:text-[48px] lg:text-[64px]"> Odkryj uroki twojego regionu </h1>
                 <p className="text-[14px] sm:text-[16px]">Poznaj najciekawsze miejsca, szlaki i wydarzenia w okolicy. Znajdziesz tu praktyczne informacje o atrakcjach, restauracjach i możliwościach aktywnego wypoczynku — wszystko, czego potrzebujesz, by zaplanować udaną podróż.</p>
-
-                <div className="flex gap-2">
-                    <Link to="/register">
-                        <Button>Dołącz do społeczności</Button>
-                    </Link>
-                </div>
             </div>
         </div>
 
