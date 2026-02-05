@@ -130,7 +130,15 @@ namespace Honalolo.Information.Application.Services
                     : JsonSerializer.Deserialize<List<string>>(e.ImagesJson)!.FirstOrDefault(),
 
                 CityName = e.City?.Name ?? "Unknown",
-                TypeName = e.Type?.TypeName ?? "Unknown"
+                TypeName = e.Type?.TypeName ?? "Unknown",
+                OpeningHours = e.OpeningHours != null ? e.OpeningHours.Select(o => o.Content).ToList() : new List<string>(),
+
+                // Map specific details
+                EventStartDate = e.EventDetails?.StartDate,
+                EventEndDate = e.EventDetails?.EndDate,
+                TrailDifficulty = e.TrailDetails != null ? ((Domain.Enums.DifficultyLevel)e.TrailDetails.DifficultyLevelId).ToString() : null,
+                FoodType = e.FoodDetails?.CuisineType,
+                HotelAmenities = e.HotelDetails?.AmenitiesJson
             });
 
             return dtos;

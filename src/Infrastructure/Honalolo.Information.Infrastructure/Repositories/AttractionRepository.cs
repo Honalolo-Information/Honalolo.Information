@@ -38,6 +38,11 @@ namespace Honalolo.Information.Infrastructure.Repositories
                     .ThenInclude(c => c.Region)
                     .ThenInclude(r => r.Country)
                     .ThenInclude(r => r.Continent)
+                .Include(a => a.OpeningHours)
+                .Include(a => a.EventDetails)
+                .Include(a => a.TrailDetails)
+                .Include(a => a.HotelDetails)
+                .Include(a => a.FoodDetails)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(type))

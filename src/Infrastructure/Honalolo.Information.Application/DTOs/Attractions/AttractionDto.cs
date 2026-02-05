@@ -9,5 +9,13 @@
         public decimal Price { get; set; }
         public string MainImage { get; set; } = string.Empty; // Extracted from JSON
         public int AuthorId { get; set; }
+        public List<string> OpeningHours { get; set; } = new();
+
+        // Specific properties flattened for list view if needed, or kept structural
+        public DateTime? EventStartDate { get; set; }
+        public DateTime? EventEndDate { get; set; }
+        public string? TrailDifficulty { get; set; }
+        public string? FoodType { get; set; }
+        public string? HotelAmenities { get; set; }
     }
 }
