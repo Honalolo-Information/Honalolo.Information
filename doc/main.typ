@@ -4,7 +4,6 @@
 #let project_title = "System Informacji Turystycznej - Honalolo"
 #let authors = ("Marcel Lis", "Piotr Juszkiewicz", "Karol Rozmus", "Jan Lelko", "Adam Haber")
 #let supervisor = "dr hab. inż. prof. PŚ Bożena Małysiak-Mrozek"
-#let group_id = "[Nr Sekcji]"
 
 #set document(title: project_title, author: authors)
 #set text(font: "Linux Libertine", lang: "pl")
