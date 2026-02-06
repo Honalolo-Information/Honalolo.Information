@@ -42,7 +42,11 @@
 
 // --- ZAWARTOŚĆ ---
 #include "chapters/01_wstep.typ"
+#pagebreak(weak: true)
 #include "chapters/02_technologie.typ"
+#pagebreak(weak: true)
 #include "chapters/03_spec_zewnetrzna.typ"
+#pagebreak(weak: true)
 #include "chapters/04_spec_wewnetrzna.typ"
+#pagebreak(weak: true)
 #include "chapters/05_podsumowanie.typ"

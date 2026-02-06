@@ -15,7 +15,7 @@ Zgodnie z wymaganiami, do projektu dołączono (jako załączniki):
   image("../images/users_roles.png", width: 90%),
   caption: [Hierarchia ról w systemie],
 ) <rys_erd>
-
+#pagebreak(weak: true)
 - Model logiczny i fizyczny bazy danych (diagramy ERD).
 #figure(
   image("../images/erd_diagram.png", width: 90%),

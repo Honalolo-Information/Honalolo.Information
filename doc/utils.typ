@@ -11,3 +11,6 @@
   text(1.3em, weight: "bold", fill: rgb("#003366"))[#title]
   v(0.5em)
 }
+
+// Helper to keep content together (prevent page breaks inside)
+#let nobreak(content) = block(breakable: false, content)
