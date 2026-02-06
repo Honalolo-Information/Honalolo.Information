@@ -358,6 +358,8 @@ namespace Honalolo.Information.Application.Services
                 .Include(a => a.TrailDetails)
                 .Include(a => a.HotelDetails)
                 .Include(a => a.FoodDetails)
+                .Include(a => a.OpeningHours) // Include OpeningHours to allow updating
+                .Include(a => a.Languages) // Include Languages to allow updating
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (attraction == null) return null;
@@ -386,6 +388,30 @@ namespace Honalolo.Information.Application.Services
                      ContinentName = dto.ContinentName 
                  });
                  attraction.CityId = city.Id;
+            }
+
+            // Update Opening Hours if provided
+            if (dto.OpeningHours != null)
+            {
+                // Clear existing
+                attraction.OpeningHours.Clear();
+                // Add new
+                foreach (var oh in dto.OpeningHours)
+                {
+                    attraction.OpeningHours.Add(new OpeningHour { Content = oh });
+                }
+            }
+
+            // Update Languages if provided
+            if (dto.Languages != null)
+            {
+                // Clear existing
+                attraction.Languages.Clear();
+                // Add new
+                foreach (var lang in dto.Languages)
+                {
+                    attraction.Languages.Add(new AttractionLanguage { LanguageName = lang });
+                }
             }
 
 
