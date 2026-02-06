@@ -4,29 +4,29 @@ import Button from "../components/Button";
 import { Link } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import getAttraction from "../../api/requests/getAttraction";
-import getProfile from "../../api/requests/getProfile";
+import getAttraction from "../api/requests/getAttraction";
+import getProfile from "../api/requests/getProfile";
 
 export default function ProfilePage() {
     const auth = useContext(AuthContext)
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         handleLoad();
     }, [auth.value]);
 
     async function handleLoad() {
-    console.log(auth);
         const r = await getProfile(auth.value);
-
+        setData(r);
         console.log(r);
-        // setData(r);
     }
+
+    if(!data) return null;
 
     return <div className="p-4 pt-8 mx-auto">
         <div className="flex items-center gap-8">
             {/* <Avatar /> */}
-            <h1>Piotr Juszkiewicz</h1>
+            <h1>{auth.username}</h1>
         </div>
 
         <div className="mt-7 flex flex-col gap-4">
@@ -38,7 +38,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="m-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-                {data.filter((item) => item.authorId === auth.userId).map((attraction) => (
+                {data.myAttractions.map((attraction) => (
                     <Attraction key={attraction.id} data={attraction} />
                 ))}
             </div>

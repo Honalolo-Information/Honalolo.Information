@@ -67,11 +67,32 @@ export default function LocationSelector(props) {
         setCities(c);
     }, [regionVal]);
 
+    useEffect(() => {
+        if (!props.defaultValue) return;
+        handleDefaultValue();
+
+    }, [props.defaultValue]);
+
+    async function handleDefaultValue() {
+        setTypeVal(props.defaultValue.type);
+        setContinentVal(props.defaultValue.continent);
+        await sleep(100);
+        setCountryVal(props.defaultValue.country);
+        await sleep(100);
+        setRegionVal(props.defaultValue.region);
+        await sleep(100);
+        setCityVal(props.defaultValue.city);
+    }
+
     return <>
-        <Select value={typeVal} onChange={setTypeVal} label="Kategoria" options={types} />
+        <Select value={typeVal} onChange={setTypeVal} label="Kategoria" options={types} disabled={props.lockTypes} />
         <Select value={continentVal} onChange={setContinentVal} label="Kontynent" options={continents} />
         <Select value={countryVal} onChange={setCountryVal} label="Kraj" options={countries} />
         <Select value={regionVal} onChange={setRegionVal} label="Region" options={regions} />
         <Select value={cityVal} onChange={setCityVal} label="Miasto" options={cities} />
     </>
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

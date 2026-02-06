@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
-import image from "../assets/login.png";
+import image from "../assets/register.jpg";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import AuthContext from "../contexts/AuthContext";
-import loginRequest from "../../api/requests/loginRequest";
+import loginRequest from "../api/requests/loginRequest";
 import { Link, useNavigate } from "react-router";
+
+import logo from "../assets/pineapple.png";
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -37,17 +39,27 @@ export default function LoginPage() {
     }
 
     return <div className="min-h-[calc(100vh-59px)] grid grid-cols-[2fr_1fr]">
-        <img src={image} className="hidden sm:flex w-full h-full object-cover" />
+        <img src={image} className="brightness-80 hidden md:flex w-full h-full object-cover" />
 
         <form onSubmit={handleLogin} className="w-full flex items-center justify-center">
-            <div className="p-8 w-[100vw] sm:w-[400px] flex flex-col gap-4 ">
-                <h1>Logowanie</h1>
+            <div className="p-4 sm:p-8 w-[100vw] md:w-[500px] flex flex-col gap-4 ">
+
+                <img src={logo} className="w-24 mx-auto" />
+                <div className="mb-4 text-center">
+                    <h1>Zaloguj się na&nbsp;swoje&nbsp;konto</h1>
+                    <p>Witamy ponownie! Prosze wpisz dane logowania.</p>
+                </div>
+
                 <Input value={email} onChange={setEmail} label="Email" type="email" required />
                 <Input value={password} onChange={setPassword} label="Hasło" type="password" required />
 
-                <p> Nie masz konta? To je <Link to="/register" className="underline">załóż</Link>.  </p>
 
                 <Button>Zaloguj się</Button>
+
+                <p className="text-center mt-3">  
+                    <span>Nie masz konta? </span>
+                    <Link to="/register" className="underline text-[var(--accent-dark)]">To se załóż.</Link>  
+                </p>
             </div>
         </form>
     </div>

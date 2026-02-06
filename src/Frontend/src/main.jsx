@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 import HomePage from './pages/HomePage.jsx';
 import Page from './layout/Page.jsx';
 import AttractionPage from './pages/AttractionPage.jsx';
@@ -9,6 +9,8 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import App from './App.jsx';
 import CreateAttraction from './pages/CreateAttraction.jsx';
+import AdminPage from './pages/AdminPage.jsx';
+import EditAttraction from './pages/EditAttraction.jsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        Component: HomePage,
+        element: <Navigate to="/login" />
       },
       {
         path: "/attraction/:id",
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "/create",
         Component: CreateAttraction,
+      },
+      {
+        path: "/edit/:id",
+        Component: EditAttraction,
+      },
+      {
+        path: "/admin",
+        Component: AdminPage,
       },
 
     ]

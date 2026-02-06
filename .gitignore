@@ -436,3 +436,4 @@ FodyWeavers.xsd
 =======
 src/frontend/node_modules
 node_modules
+src/Infrastructure/Honalolo.Information.WebApi/wwwroot
