@@ -1,7 +1,4 @@
-import { Link } from "react-router";
 import image from "../assets/home.png";
-import Attraction from "../components/Attraction";
-import Button from "../components/Button";
 
 export default function HomePage() {
     return <div>

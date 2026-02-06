@@ -3,21 +3,19 @@ import FileUpload from "../components/FileUpload";
 import Input from "../components/Input";
 import Select from "../components/Select";
 import Button from "../components/Button";
-import getRegion from "../../api/requests/getRegion";
+import getRegion from "../api/requests/getRegion";
 import LocationSelector from "../components/LocationSelector";
-import createAttraction from "../../api/requests/createAttraction";
+import createAttraction from "../api/requests/createAttraction";
 import AuthContext from "../contexts/AuthContext";
-import uploadImage from "../../api/requests/uploadImage";
+import uploadImage from "../api/requests/uploadImage";
+import { useNavigate } from "react-router";
 
 export default function CreateAttraction() {
     const [data, setData] = useState(false);
     const [locationVal, setLocationVal] = useState({});
     const [images, setImages] = useState([]);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log(images);
-    }, [images])
-    
     const auth = useContext(AuthContext);
 
     async function handleLoad() {
@@ -32,10 +30,6 @@ export default function CreateAttraction() {
     useEffect(() => {
         handleLoad();
     }, []);
-
-    useEffect(() => {
-        console.log(locationVal);
-    }, [locationVal]);
 
     async function handleSubmit(e) {
         try {
@@ -79,6 +73,8 @@ export default function CreateAttraction() {
             obj['CityName'] = city.name;
 
             obj['Price'] = parseFloat(obj['Price']) || 0;
+            obj['Languages'] = obj['Languages'].split(" ");
+            obj['OpeningHours'] = obj['OpeningHours'].split("\n");
 
             obj['TrailDetails'] = {};
             obj['TrailDetails']['DistanceMeters'] = parseInt(obj['DistanceMeters']) || 0;
@@ -95,28 +91,28 @@ export default function CreateAttraction() {
             obj['FoodDetails']['FoodType'] = obj['FoodType'];
 
 
-            console.log(obj);
-
             const r = await createAttraction(auth.value, obj);
             const id = r.id;
 
             // Upload images
             const imagesForm = new FormData();
             images.forEach((file) => {
-                imagesForm.append("Images", file);
+                imagesForm.append("files", file);
             });
 
             await uploadImage(auth.value, id, imagesForm);
+            navigate(`/attraction/${id}`);
 
 
         } catch (error) {
+            console.error(error);
             alert("Sorki, coś poszło nie tak");
             // alert(error);
         }
 
     }
 
-    return <form onSubmit={handleSubmit} className="flex items-center justify-center p-4 pt-8">
+    return <form onSubmit={handleSubmit} className="flex items-center justify-center p-4 py-8">
         <div className="max-w-[600px] w-full flex flex-col gap-4">
             <h1>Nowa atrakcja</h1>
 
@@ -131,10 +127,10 @@ export default function CreateAttraction() {
 
             <h2 className="mt-[32px] text-[32px]">Opcjonalne</h2>
             <Input name="Price" type="float" label="Koszt atrakcji (opcjonalnie)" />
-            <Input label="Języki (opcjonalnie)" />
-            <Input label="Czas trwania (opcjonalnie)" />
+            <Input name="Languages" label="Języki (opcjonalnie)" />
+            {/* <Input name="Duration" label="Czas trwania (opcjonalnie)" /> */}
 
-            <Input label="Godziny otwarcia (opcjonalnie)" type="textarea" />
+            <Input name="OpeningHours" label="Godziny otwarcia (opcjonalnie)" type="textarea" />
 
 
             {locationVal.type == 51 ? <TrailInputs data={data} /> : null}

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Honalolo</title>
 
@@ -16,63 +16,128 @@
         @import "tailwindcss";
 
         :root {
-            --accent: #F5B17B;
+            --accent: #ff9531;
+            --accent-dark: #e3750f;
             --lgreen: white;
             --mgreen: #ffffff;
             --green: white;
             --white: #FCF9EA;
             --page-width: 1600px;
-            --rounded: 5px;
+            --rounded: 8px;
+            --nav-h: 59px;
+
+            --border-color: rgb(202, 202, 202);
+            --border: 1px solid var(--border-color);
         }
 
         * {
             box-sizing: border-box;
-            font-family: "Varta", sans-serif;
+            font-family: "Inter", sans-serif;
         }
+
         h1,
         h2,
         h3,
         h4,
         h5,
         h6 {
-            font-family: "Varta", sans-serif;
+            font-weight: 500 !important;
         }
 
-        input, select, textarea, button{
+        .input-label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input,
+        textarea,
+        select {
+            padding: 8px 12px;
+            border: var(--border);
+            background: white;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
             font-family: "Helvetica", "Inter", sans-serif;
-            font-size: 14px !important;
+            font-size: 16px !important;
             border-radius: var(--rounded);
             font-weight: 400 !important;
         }
 
-        input:focus, select:focus{
+        textarea {
+            resize: none;
+            height: 200px;
+        }
+
+        input:focus,
+        select:focus, textarea:focus {
             border-color: var(--accent);
             outline: none;
         }
 
-        button{
+        button {
+            padding: 8px 16px;
             border-radius: var(--rounded);
-            border: none;
-        }
-
-        input[type="file"]{
-            padding: 8px;
-            border: 1px solid black;
-            line-height: 100%;
+            font-weight: 500 !important;
+            background: var(--accent);
+            border: 1px solid var(--accent-dark);
+            cursor: pointer;
         }
 
         p {
             max-width: 100ch;
         }
 
-        h1{
-            font-size: 42px;;
+        h1 {
+            font-size: 32px;
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        h3{
+            font-size: 24px;
         }
 
         body {
-            background: #ececec;
+            /* background: #ececec; */
+            background: white;
         }
 
+        html,
+        body {
+            width: 100vw;
+            overflow-x: hidden;
+
+        }
+
+        tr {
+            border-bottom: var(--border);
+        }
+
+        tr:last-child {
+            border-bottom: 0 !important;
+        }
+
+        thead {
+            border-bottom: var(--border);
+            background: #eee;
+        }
+
+
+        th,
+        td {
+            padding: 4px 8px;
+        }
+
+        th {
+            font-weight: 500;
+            text-align: left;
+        }
     </style>
 </head>
 

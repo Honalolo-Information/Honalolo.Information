@@ -1,16 +1,14 @@
 import { useEffect } from "react";
 
 export default function Select(props) {
-    useEffect(() => {
-        if (props.onChange) {
-            props.onChange(props.options[0]?.value || "none");
-        }
-    }, [props.options]);
-
-
-    return <div className="flex flex-col gap-0.5 w-full">
-        <label>{props.label}</label>
-        <select name={props.name} value={props.value} onChange={handleChange} className="px-3 py-2 bg-[var(--mgreen)] text-[14px] border-1 border-[#000] rounded-[0px] w-full">
+    // useEffect(() => {
+    //     if (props.onChange) {
+    //         props.onChange(props.options[0]?.value || "none");
+    //     }
+    // }, [props.options]);
+    return <div className="flex flex-col w-full">
+        <label className="input-label">{props.label}</label>
+        <select name={props.name} value={props.value} defaultValue={props.defaultValue} onChange={handleChange} disabled={props.disabled}>
             <option value={"none"}>Wybierz...</option>
             {props.options.map((item, index) => {
                 return <option key={index} value={item.value}>
